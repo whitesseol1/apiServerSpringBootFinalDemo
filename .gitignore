@@ -1,3 +1,6 @@
 # Project exclude paths
 /.gradle/
 /.idea/.gitignore
+src/main/java/com/example/demo/config/secret/Secret.java
+Secret.java
+/secret/
