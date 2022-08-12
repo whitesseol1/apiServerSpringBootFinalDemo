@@ -70,4 +70,28 @@ public class JwtService {
         return claims.getBody().get("userIdx",Integer.class);
     }
 
+    //jwt 로그아웃
+
+    public boolean expJwt() throws BaseException{
+        HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
+        String jwt = request.getHeader("X-ACCESS-TOKEN");
+
+        try {
+            Date expiration = Jwts.parserBuilder().setSigningKey(KEY).build().parseClaimsJws(jwt)
+                    .getBody().getExpiration();
+            Date now = new Date();
+
+            if (expiration.after(now)) {
+                return true;
+            }
+            throw new BaseException(FAILED_TO_LOGOUT_JWT);
+        } catch (Exception ignored) {
+            throw new BaseException(FAILED_TO_LOGOUT_JWT);
+        }
+
+    }
+
+
+
+
 }

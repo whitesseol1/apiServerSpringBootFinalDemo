@@ -16,7 +16,7 @@ import static com.example.demo.config.BaseResponseStatus.*;
 import static com.example.demo.utils.ValidationRegex.isRegexEmail;
 
 @RestController
-@RequestMapping("/app/users")
+@RequestMapping("/app1/users")
 public class UserController {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 
