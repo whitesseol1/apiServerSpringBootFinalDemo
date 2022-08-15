@@ -1,3 +1,46 @@
-22:32:15.566 ERROR [File:TestController.java] [Func:getAll] [Line:38] [Message:ERROR Level 테스트]- ERROR Level 테스트
-22:37:28.398 ERROR [File:TestController.java] [Func:getAll] [Line:38] [Message:ERROR Level 테스트]- ERROR Level 테스트
-23:01:14.335 ERROR [File:TestController.java] [Func:getAll] [Line:38] [Message:ERROR Level �׽�Ʈ]- ERROR Level �׽�Ʈ
+12:13:09.364 ERROR [File:UserService2.java] [Func:createUser] [Line:43] [Message:error테스트]- error테스트
+12:13:09.550 ERROR [File:UserProvider2.java] [Func:checkEmail] [Line:31] [Message:errortest2]- errortest2
+12:13:09.552 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:24] [Message:에러 다오 테스트]- 에러 다오 테스트
+12:13:09.559 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:26] [Message:에러 다오 테스트2]- 에러 다오 테스트2
+12:13:09.568 ERROR [File:UserService2.java] [Func:createUser] [Line:50] [Message:error테스트]- error테스트
+12:13:09.569 ERROR [File:UserService2.java] [Func:createUser] [Line:61] [Message:error테스트]- error테스트
+12:13:09.595 ERROR [File:UserService2.java] [Func:createUser] [Line:63] [Message:error테스트]- error테스트
+12:18:30.387 ERROR [File:UserService2.java] [Func:createUser] [Line:43] [Message:error테스트]- error테스트
+12:18:30.389 ERROR [File:UserProvider2.java] [Func:checkEmail] [Line:31] [Message:errortest2]- errortest2
+12:18:30.389 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:24] [Message:에러 다오 테스트]- 에러 다오 테스트
+12:18:30.391 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:26] [Message:에러 다오 테스트2]- 에러 다오 테스트2
+12:18:30.398 ERROR [File:UserService2.java] [Func:createUser] [Line:50] [Message:error테스트]- error테스트
+12:18:30.399 ERROR [File:UserService2.java] [Func:createUser] [Line:61] [Message:error테스트]- error테스트
+12:18:30.416 ERROR [File:UserService2.java] [Func:createUser] [Line:63] [Message:error테스트]- error테스트
+12:23:02.988 ERROR [File:UserService2.java] [Func:createUser] [Line:43] [Message:error테스트]- error테스트
+12:23:02.990 ERROR [File:UserProvider2.java] [Func:checkEmail] [Line:31] [Message:errortest2]- errortest2
+12:23:02.992 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:24] [Message:에러 다오 테스트]- 에러 다오 테스트
+12:23:02.993 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:26] [Message:에러 다오 테스트2]- 에러 다오 테스트2
+12:23:03.002 ERROR [File:UserService2.java] [Func:createUser] [Line:45] [Message:error테스트]- error테스트
+12:23:14.860 ERROR [File:UserService2.java] [Func:createUser] [Line:43] [Message:error테스트]- error테스트
+12:23:14.863 ERROR [File:UserProvider2.java] [Func:checkEmail] [Line:31] [Message:errortest2]- errortest2
+12:23:14.864 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:24] [Message:에러 다오 테스트]- 에러 다오 테스트
+12:23:14.866 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:26] [Message:에러 다오 테스트2]- 에러 다오 테스트2
+12:23:14.873 ERROR [File:UserService2.java] [Func:createUser] [Line:50] [Message:error테스트]- error테스트
+12:23:14.874 ERROR [File:UserService2.java] [Func:createUser] [Line:61] [Message:error테스트]- error테스트
+12:23:14.896 ERROR [File:UserService2.java] [Func:createUser] [Line:63] [Message:error테스트]- error테스트
+12:26:41.405 ERROR [File:UserService2.java] [Func:createUser] [Line:43] [Message:error테스트]- error테스트
+12:26:41.409 ERROR [File:UserProvider2.java] [Func:checkEmail] [Line:31] [Message:errortest2]- errortest2
+12:26:41.410 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:24] [Message:에러 다오 테스트]- 에러 다오 테스트
+12:26:41.411 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:26] [Message:에러 다오 테스트2]- 에러 다오 테스트2
+12:26:41.419 ERROR [File:UserService2.java] [Func:createUser] [Line:45] [Message:error테스트]- error테스트
+12:26:46.308 ERROR [File:UserService2.java] [Func:createUser] [Line:43] [Message:error테스트]- error테스트
+12:26:46.310 ERROR [File:UserProvider2.java] [Func:checkEmail] [Line:31] [Message:errortest2]- errortest2
+12:26:46.311 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:24] [Message:에러 다오 테스트]- 에러 다오 테스트
+12:26:46.312 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:26] [Message:에러 다오 테스트2]- 에러 다오 테스트2
+12:26:46.320 ERROR [File:UserService2.java] [Func:createUser] [Line:50] [Message:error테스트]- error테스트
+12:26:46.321 ERROR [File:UserService2.java] [Func:createUser] [Line:61] [Message:error테스트]- error테스트
+12:26:46.338 ERROR [File:UserService2.java] [Func:createUser] [Line:63] [Message:error테스트]- error테스트
+13:40:41.611 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:24] [Message:에러 다오 테스트]- 에러 다오 테스트
+13:40:41.612 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:26] [Message:에러 다오 테스트2]- 에러 다오 테스트2
+13:55:41.554 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:24] [Message:에러 다오 테스트]- 에러 다오 테스트
+13:55:41.561 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:26] [Message:에러 다오 테스트2]- 에러 다오 테스트2
+17:04:53.264 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:24] [Message:에러 다오 테스트]- 에러 다오 테스트
+17:04:53.269 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:26] [Message:에러 다오 테스트2]- 에러 다오 테스트2
+22:32:19.084 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:24] [Message:에러 다오 테스트]- 에러 다오 테스트
+22:32:19.085 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:26] [Message:에러 다오 테스트2]- 에러 다오 테스트2

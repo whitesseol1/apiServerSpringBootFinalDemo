@@ -38,11 +38,6 @@ public class UserService {
             throw new BaseException(POST_USERS_EXISTS_EMAIL);
         }
 
-        //회원아이디 중복
-        if(userProvider.checkId(postUserReq.getId()) ==1){
-            return new BaseException(POST_USERS_EXISTS_ID);
-        }
-
         String pwd;
         try{
             //암호화

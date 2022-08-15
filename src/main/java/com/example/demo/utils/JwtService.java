@@ -7,10 +7,13 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
@@ -18,7 +21,7 @@ import static com.example.demo.config.BaseResponseStatus.*;
 
 @Service
 public class JwtService {
-
+    final Logger logger = LoggerFactory.getLogger(this.getClass());
     /*
     JWT 생성
     @param userIdx
@@ -26,14 +29,16 @@ public class JwtService {
      */
     public String createJwt(int userIdx){
         Date now = new Date();
-        return Jwts.builder()
+          return Jwts.builder()
                 .setHeaderParam("type","jwt")
                 .claim("userIdx",userIdx)
                 .setIssuedAt(now)
                 .setExpiration(new Date(System.currentTimeMillis()+1*(1000*60*60*24*365)))
                 .signWith(SignatureAlgorithm.HS256,Secret.JWT_SECRET_KEY)
                 .compact();
+
     }
+
 
     /*
     Header에서 X-ACCESS-TOKEN 으로 JWT 추출
@@ -41,7 +46,8 @@ public class JwtService {
      */
     public String getJwt(){
         HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
-        return request.getHeader("X-ACCESS-TOKEN");
+       return request.getHeader("X-ACCESS-TOKEN");
+       /* return request.getHeader("AUTHORIZATION_HEADER");*/
     }
 
     /*
@@ -55,13 +61,14 @@ public class JwtService {
         if(accessToken == null || accessToken.length() == 0){
             throw new BaseException(EMPTY_JWT);
         }
-
+        System.out.println("accessToken 테스트 "+accessToken);
         // 2. JWT parsing
         Jws<Claims> claims;
         try{
             claims = Jwts.parser()
                     .setSigningKey(Secret.JWT_SECRET_KEY)
                     .parseClaimsJws(accessToken);
+            System.out.println("claims 테스트 "+claims);
         } catch (Exception ignored) {
             throw new BaseException(INVALID_JWT);
         }
@@ -77,7 +84,7 @@ public class JwtService {
         String jwt = request.getHeader("X-ACCESS-TOKEN");
 
         try {
-            Date expiration = Jwts.parserBuilder().setSigningKey(KEY).build().parseClaimsJws(jwt)
+            Date expiration = Jwts.parser().setSigningKey(Secret.JWT_SECRET_KEY).parseClaimsJws(jwt)
                     .getBody().getExpiration();
             Date now = new Date();
 

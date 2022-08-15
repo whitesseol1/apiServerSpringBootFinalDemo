@@ -11,5 +11,8 @@ public class PostUserReq {
     private String userName;
     private String id;
     private String email;
+    private String phone;
+    private String address;
+    private String userImg;
     private String password;
 }

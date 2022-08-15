@@ -1,6 +1,84 @@
-22:32:15.547 WARN  [File:TestController.java] [Func:getAll] [Line:35] [Message:Warn Level 테스트]- Warn Level 테스트
-22:32:15.566 ERROR [File:TestController.java] [Func:getAll] [Line:38] [Message:ERROR Level 테스트]- ERROR Level 테스트
-22:37:28.395 WARN  [File:TestController.java] [Func:getAll] [Line:35] [Message:Warn Level 테스트]- Warn Level 테스트
-22:37:28.398 ERROR [File:TestController.java] [Func:getAll] [Line:38] [Message:ERROR Level 테스트]- ERROR Level 테스트
-23:01:14.332 WARN  [File:TestController.java] [Func:getAll] [Line:35] [Message:Warn Level �׽�Ʈ]- Warn Level �׽�Ʈ
-23:01:14.335 ERROR [File:TestController.java] [Func:getAll] [Line:38] [Message:ERROR Level �׽�Ʈ]- ERROR Level �׽�Ʈ
+12:13:09.364 ERROR [File:UserService2.java] [Func:createUser] [Line:43] [Message:error테스트]- error테스트
+12:13:09.550 ERROR [File:UserProvider2.java] [Func:checkEmail] [Line:31] [Message:errortest2]- errortest2
+12:13:09.552 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:24] [Message:에러 다오 테스트]- 에러 다오 테스트
+12:13:09.559 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:26] [Message:에러 다오 테스트2]- 에러 다오 테스트2
+12:13:09.568 ERROR [File:UserService2.java] [Func:createUser] [Line:50] [Message:error테스트]- error테스트
+12:13:09.569 ERROR [File:UserService2.java] [Func:createUser] [Line:61] [Message:error테스트]- error테스트
+12:13:09.595 ERROR [File:UserService2.java] [Func:createUser] [Line:63] [Message:error테스트]- error테스트
+12:18:30.387 ERROR [File:UserService2.java] [Func:createUser] [Line:43] [Message:error테스트]- error테스트
+12:18:30.389 ERROR [File:UserProvider2.java] [Func:checkEmail] [Line:31] [Message:errortest2]- errortest2
+12:18:30.389 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:24] [Message:에러 다오 테스트]- 에러 다오 테스트
+12:18:30.391 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:26] [Message:에러 다오 테스트2]- 에러 다오 테스트2
+12:18:30.398 ERROR [File:UserService2.java] [Func:createUser] [Line:50] [Message:error테스트]- error테스트
+12:18:30.399 ERROR [File:UserService2.java] [Func:createUser] [Line:61] [Message:error테스트]- error테스트
+12:18:30.416 ERROR [File:UserService2.java] [Func:createUser] [Line:63] [Message:error테스트]- error테스트
+12:23:02.988 ERROR [File:UserService2.java] [Func:createUser] [Line:43] [Message:error테스트]- error테스트
+12:23:02.990 ERROR [File:UserProvider2.java] [Func:checkEmail] [Line:31] [Message:errortest2]- errortest2
+12:23:02.992 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:24] [Message:에러 다오 테스트]- 에러 다오 테스트
+12:23:02.993 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:26] [Message:에러 다오 테스트2]- 에러 다오 테스트2
+12:23:03.002 ERROR [File:UserService2.java] [Func:createUser] [Line:45] [Message:error테스트]- error테스트
+12:23:14.860 ERROR [File:UserService2.java] [Func:createUser] [Line:43] [Message:error테스트]- error테스트
+12:23:14.863 ERROR [File:UserProvider2.java] [Func:checkEmail] [Line:31] [Message:errortest2]- errortest2
+12:23:14.864 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:24] [Message:에러 다오 테스트]- 에러 다오 테스트
+12:23:14.866 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:26] [Message:에러 다오 테스트2]- 에러 다오 테스트2
+12:23:14.873 ERROR [File:UserService2.java] [Func:createUser] [Line:50] [Message:error테스트]- error테스트
+12:23:14.874 ERROR [File:UserService2.java] [Func:createUser] [Line:61] [Message:error테스트]- error테스트
+12:23:14.896 ERROR [File:UserService2.java] [Func:createUser] [Line:63] [Message:error테스트]- error테스트
+12:26:41.405 ERROR [File:UserService2.java] [Func:createUser] [Line:43] [Message:error테스트]- error테스트
+12:26:41.409 ERROR [File:UserProvider2.java] [Func:checkEmail] [Line:31] [Message:errortest2]- errortest2
+12:26:41.410 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:24] [Message:에러 다오 테스트]- 에러 다오 테스트
+12:26:41.411 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:26] [Message:에러 다오 테스트2]- 에러 다오 테스트2
+12:26:41.419 ERROR [File:UserService2.java] [Func:createUser] [Line:45] [Message:error테스트]- error테스트
+12:26:46.308 ERROR [File:UserService2.java] [Func:createUser] [Line:43] [Message:error테스트]- error테스트
+12:26:46.310 ERROR [File:UserProvider2.java] [Func:checkEmail] [Line:31] [Message:errortest2]- errortest2
+12:26:46.311 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:24] [Message:에러 다오 테스트]- 에러 다오 테스트
+12:26:46.312 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:26] [Message:에러 다오 테스트2]- 에러 다오 테스트2
+12:26:46.320 ERROR [File:UserService2.java] [Func:createUser] [Line:50] [Message:error테스트]- error테스트
+12:26:46.321 ERROR [File:UserService2.java] [Func:createUser] [Line:61] [Message:error테스트]- error테스트
+12:26:46.338 ERROR [File:UserService2.java] [Func:createUser] [Line:63] [Message:error테스트]- error테스트
+12:29:43.002 WARN  [File:UserController2.java] [Func:createUser] [Line:57] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@422fefd4]- req테스트 com.example.demo.src.user2.model.PostUserReq@422fefd4
+12:36:16.455 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@9494f1f]- req테스트 com.example.demo.src.user2.model.PostUserReq@9494f1f
+12:36:19.084 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@5ba5942e]- req테스트 com.example.demo.src.user2.model.PostUserReq@5ba5942e
+12:37:36.315 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@314eaa8a]- req테스트 com.example.demo.src.user2.model.PostUserReq@314eaa8a
+12:38:02.331 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@155144ae]- req테스트 com.example.demo.src.user2.model.PostUserReq@155144ae
+12:38:03.776 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@64eccbc2]- req테스트 com.example.demo.src.user2.model.PostUserReq@64eccbc2
+12:38:18.477 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@6db37a5b]- req테스트 com.example.demo.src.user2.model.PostUserReq@6db37a5b
+12:41:13.346 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@4d912e74]- req테스트 com.example.demo.src.user2.model.PostUserReq@4d912e74
+12:42:46.819 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@6e7162ad]- req테스트 com.example.demo.src.user2.model.PostUserReq@6e7162ad
+13:05:44.342 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@42db7738]- req테스트 com.example.demo.src.user2.model.PostUserReq@42db7738
+13:05:52.760 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@155144ae]- req테스트 com.example.demo.src.user2.model.PostUserReq@155144ae
+13:09:37.146 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@4e343e80]- req테스트 com.example.demo.src.user2.model.PostUserReq@4e343e80
+13:11:34.442 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@2e7bc835]- req테스트 com.example.demo.src.user2.model.PostUserReq@2e7bc835
+13:12:25.889 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@4314a8ba]- req테스트 com.example.demo.src.user2.model.PostUserReq@4314a8ba
+13:12:34.740 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@f0e8287]- req테스트 com.example.demo.src.user2.model.PostUserReq@f0e8287
+13:12:40.215 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@479d9012]- req테스트 com.example.demo.src.user2.model.PostUserReq@479d9012
+13:25:05.075 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@735c45bd]- req테스트 com.example.demo.src.user2.model.PostUserReq@735c45bd
+13:25:15.920 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@72c5c94f]- req테스트 com.example.demo.src.user2.model.PostUserReq@72c5c94f
+13:25:17.989 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@6e9866de]- req테스트 com.example.demo.src.user2.model.PostUserReq@6e9866de
+13:29:29.130 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@2ae38f81]- req테스트 com.example.demo.src.user2.model.PostUserReq@2ae38f81
+13:29:38.136 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@7c022967]- req테스트 com.example.demo.src.user2.model.PostUserReq@7c022967
+13:29:47.169 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@605f957d]- req테스트 com.example.demo.src.user2.model.PostUserReq@605f957d
+13:29:57.647 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@4c2b995a]- req테스트 com.example.demo.src.user2.model.PostUserReq@4c2b995a
+13:32:41.421 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@26fae071]- req테스트 com.example.demo.src.user2.model.PostUserReq@26fae071
+13:32:47.258 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@5540e56e]- req테스트 com.example.demo.src.user2.model.PostUserReq@5540e56e
+13:34:44.198 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@28579503]- req테스트 com.example.demo.src.user2.model.PostUserReq@28579503
+13:35:51.538 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@474c17da]- req테스트 com.example.demo.src.user2.model.PostUserReq@474c17da
+13:36:42.435 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@cd97140]- req테스트 com.example.demo.src.user2.model.PostUserReq@cd97140
+13:36:44.374 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@26e70b69]- req테스트 com.example.demo.src.user2.model.PostUserReq@26e70b69
+13:39:11.789 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@3bce1585]- req테스트 com.example.demo.src.user2.model.PostUserReq@3bce1585
+13:39:14.013 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@751c0924]- req테스트 com.example.demo.src.user2.model.PostUserReq@751c0924
+13:39:55.364 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@55e31ba9]- req테스트 com.example.demo.src.user2.model.PostUserReq@55e31ba9
+13:39:57.311 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@25c484c6]- req테스트 com.example.demo.src.user2.model.PostUserReq@25c484c6
+13:40:41.488 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@10d82996]- req테스트 com.example.demo.src.user2.model.PostUserReq@10d82996
+13:40:41.611 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:24] [Message:에러 다오 테스트]- 에러 다오 테스트
+13:40:41.612 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:26] [Message:에러 다오 테스트2]- 에러 다오 테스트2
+13:55:41.401 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@49d0e9c3]- req테스트 com.example.demo.src.user2.model.PostUserReq@49d0e9c3
+13:55:41.554 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:24] [Message:에러 다오 테스트]- 에러 다오 테스트
+13:55:41.561 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:26] [Message:에러 다오 테스트2]- 에러 다오 테스트2
+17:04:40.131 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@1dda3450]- req테스트 com.example.demo.src.user2.model.PostUserReq@1dda3450
+17:04:53.236 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@4532ee0b]- req테스트 com.example.demo.src.user2.model.PostUserReq@4532ee0b
+17:04:53.264 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:24] [Message:에러 다오 테스트]- 에러 다오 테스트
+17:04:53.269 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:26] [Message:에러 다오 테스트2]- 에러 다오 테스트2
+22:32:18.891 WARN  [File:UserController2.java] [Func:createUser] [Line:54] [Message:req테스트 com.example.demo.src.user2.model.PostUserReq@4fbb1f90]- req테스트 com.example.demo.src.user2.model.PostUserReq@4fbb1f90
+22:32:19.084 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:24] [Message:에러 다오 테스트]- 에러 다오 테스트
+22:32:19.085 ERROR [File:UserDao2.java] [Func:checkEmail] [Line:26] [Message:에러 다오 테스트2]- 에러 다오 테스트2
