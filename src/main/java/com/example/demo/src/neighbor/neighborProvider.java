@@ -3,6 +3,7 @@ package com.example.demo.src.neighbor;
 import com.example.demo.config.BaseException;
 import com.example.demo.src.neighbor.model.neighborBoardDetailCommentRes;
 import com.example.demo.src.neighbor.model.neighborBoardDetailRes;
+import com.example.demo.src.neighbor.model.neighborBoardListRes;
 import com.example.demo.src.trade.tradeDao;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
@@ -48,6 +49,18 @@ public class neighborProvider {
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
+    }
+
+    public List<neighborBoardListRes> neighborBoardList(int userIdx) throws BaseException {
+       /* try{
+            List<neighborBoardListRes> res = neighborDao. neighborBoardList(userIdx);
+            return res;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }*/
+
+        List<neighborBoardListRes> res = neighborDao. neighborBoardList(userIdx);
+        return res;
     }
 
 }

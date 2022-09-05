@@ -5,6 +5,8 @@ import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
 import com.example.demo.src.neighbor.model.neighborBoardDetailCommentRes;
 import com.example.demo.src.neighbor.model.neighborBoardDetailRes;
+import com.example.demo.src.neighbor.model.neighborBoardListRes;
+import com.example.demo.src.trade.model.myChatRes;
 import com.example.demo.src.user.model.GetUserRes;
 import com.example.demo.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,5 +64,28 @@ public class neighborController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    @ResponseBody
+    @PostMapping("/neighborboardlist")
+    public BaseResponse<List<neighborBoardListRes>> neighborBoardList(){
+        int userIdxByJwt = 0;
+
+        try {
+            //jwt에서 idx 추출.
+            userIdxByJwt = jwtService.getUserIdx();
+
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+        try {
+            List<neighborBoardListRes> neighborBoardList = neighborProvider.neighborBoardList(userIdxByJwt);
+            return new BaseResponse<>(neighborBoardList);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+
 }
 

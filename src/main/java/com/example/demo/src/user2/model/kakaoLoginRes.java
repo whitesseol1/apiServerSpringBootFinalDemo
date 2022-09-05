@@ -1,0 +1,14 @@
+package com.example.demo.src.user2.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+public class kakaoLoginRes {
+    private String nickName;
+    private String profileImage;
+    private String email;
+}

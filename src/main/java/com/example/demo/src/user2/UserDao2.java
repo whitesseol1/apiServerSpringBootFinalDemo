@@ -21,9 +21,8 @@ public class UserDao2 {
     }
 
     public int checkEmail(String email){
-        logger.error("에러 다오 테스트");
+
         String checkEmailQuery = "select exists(select email from Member where email = ?)";
-        logger.error("에러 다오 테스트2");
 
             return this.jdbcTemplate.queryForObject(checkEmailQuery,
                     int.class,
@@ -75,6 +74,23 @@ public class UserDao2 {
     }
 
 
+    public myAccountBookRes myAccountBook(int userIdx, String yearMonth){
+        String getMyAccountBookQuery = "select Member.userId, Member.profileImg, count(*) as tradeCount, FORMAT(sum(tradeBoard.price), 0) as price" +
+                "  from Member" +
+                "        join tradeBoard on Member.userIdx = tradeBoard.userIdx" +
+                "        where tradeBoard.userIdx = ? and tradeBoard.tradeStatus = '거래완료' and" +
+                "              DATE(tradeBoard.tradeFinishTime) >= DATE(?) and DATE(tradeBoard.tradeFinishTime) < Date_add( DATE(?) ,interval 1 month)";
+        Object[] getMyAccountBookParams = new Object[]{userIdx, yearMonth, yearMonth};
+        return this.jdbcTemplate.queryForObject(getMyAccountBookQuery,
+                (rs,rowNum)-> new myAccountBookRes(
+                        rs.getString("userId"),
+                        rs.getString("profileImg"),
+                        rs.getInt("tradeCount"),
+                        rs.getString("price")),
+                getMyAccountBookParams);
+
+
+    }
 
 
 }

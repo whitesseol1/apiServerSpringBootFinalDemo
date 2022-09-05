@@ -137,7 +137,7 @@ public class tradeController {
 
     @ResponseBody
     @GetMapping ("/usertradelist")
-    public BaseResponse<List<userTradeListRes>> userTradeList(@RequestParam(required = false) int userIdx){
+    public BaseResponse<List<userTradeListRes>> userTradeList(@RequestParam int userIdx){
         try {
             List<userTradeListRes> tradeList = tradeProvider.userTradeList(userIdx);
             return new BaseResponse<>(tradeList);
@@ -148,7 +148,7 @@ public class tradeController {
 
     @ResponseBody
     @GetMapping("/tradedetail")
-    public BaseResponse<tradeDetailRes> tradeDetail(@RequestParam(required = false) int boardIdx){
+    public BaseResponse<tradeDetailRes> tradeDetail(@RequestParam int boardIdx){
         try {
             tradeDetailRes tradeDetail = tradeProvider.tradeDetail(boardIdx);
             return new BaseResponse<>(tradeDetail);
@@ -157,5 +157,25 @@ public class tradeController {
         }
     }
 
+    @ResponseBody
+    @GetMapping("/mychatdetail")
+    public BaseResponse<List<myChatDetailRes>> chatDetail(@RequestParam int chatRoomIdx){
+        int userIdxByJwt = 0;
+        //int chatRoomIdx = req.getChatRoomIdx();
+        try {
+            //jwt에서 idx 추출.
+            userIdxByJwt = jwtService.getUserIdx();
+
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+        try {
+            List<myChatDetailRes> chatDetail = tradeProvider.chatDetail(userIdxByJwt, chatRoomIdx);
+            return new BaseResponse<>(chatDetail);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 
 }

@@ -2,6 +2,7 @@ package com.example.demo.src.trade;
 
 import com.example.demo.src.user2.UserProvider2;
 import com.example.demo.src.user2.UserService2;
+import com.example.demo.src.user2.model.myAccountBookRes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.example.demo.config.BaseException;
@@ -219,5 +220,34 @@ public class tradeDao {
                 getTradeDetailParams);
 
     }
+
+    public List<myChatDetailRes> chatDetail(int userIdx, int chatRoomIdx){
+        String getMyChatDetailQuery = "select tradeImg.imgUrl as tradeImg, tradeBoard.tradeStatus, tradeBoard.price, tradeBoard.tradeTitle," +
+                "          chatContent.content," +
+                "          Member.profileImg as profileImg," +
+                "          Member.userId as writer," +
+                "        REPLACE(REPLACE(DATE_FORMAT(chatContent.updatedAt, '%p %l:%i'),'AM','오전'),'PM','오후')" +
+                "        as writeTime" +
+                "   from" +
+                "        tradeBoard join tradeImg on tradeBoard.boardIdx = tradeImg.boardIdx" +
+                "        join chatRoom on chatRoom.boardIdx = tradeBoard.boardIdx" +
+                "        join chatContent on chatContent.roomIdx = chatRoom.roomIdx" +
+                "        join Member on chatContent.userIdx = Member.userIdx" +
+                "        where chatRoom.roomIdx = ? and chatContent.userIdx = ? or chatContent.userIdx2 = ?";
+
+        Object[] getMyChatDetailParams = new Object[]{chatRoomIdx,userIdx,userIdx};
+        return this.jdbcTemplate.query(getMyChatDetailQuery,
+                (rs,rowNum)-> new myChatDetailRes(
+                        rs.getString("tradeImg"),
+                        rs.getString("tradeStatus"),
+                        rs.getString("price"),
+                        rs.getString("tradeTitle"),
+                        rs.getString("content"),
+                        rs.getString("profileImg"),
+                        rs.getString("writer"),
+                        rs.getString("writeTime")),
+                getMyChatDetailParams);
+    }
+
 
 }

@@ -44,6 +44,9 @@ dependencies {
 
     // Web
     implementation ('org.springframework.boot:spring-boot-starter-web')
+    implementation (group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1')
+
+    implementation ('com.google.code.gson:gson:2.9.0')
 
     // Security, Authentication
     implementation('org.springframework.boot:spring-boot-starter-security')
@@ -52,8 +55,8 @@ dependencies {
 
     implementation('org.springframework.boot:spring-boot-starter')
     compile('org.springframework.boot:spring-boot-starter-web')
-
-
+    compile files('libs/json-simple-1.1.jar')
+    implementation 'com.google.code.gson:gson:2.9.0'
 
 
 

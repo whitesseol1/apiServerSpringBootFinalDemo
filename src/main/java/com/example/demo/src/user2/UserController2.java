@@ -1,21 +1,19 @@
 package com.example.demo.src.user2;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
-import com.example.demo.src.user2.model.*;
+import com.example.demo.src.user2.model.PostUserReq;
+import com.example.demo.src.user2.model.PostUserRes;
+import com.example.demo.src.user2.model.kakaoLoginRes;
+import com.example.demo.src.user2.model.myAccountBookRes;
 import com.example.demo.utils.JwtService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-
 import static com.example.demo.config.BaseResponseStatus.*;
-import static com.example.demo.utils.ValidationRegex.isRegexEmail;
-import static com.example.demo.utils.ValidationRegex.isRegexId;
-import static com.example.demo.utils.ValidationRegex.isRegexPassword;
-import static com.example.demo.utils.ValidationRegex.isRegexPhone;
-import static com.example.demo.utils.ValidationRegex.isRegexAddress;
+import static com.example.demo.utils.ValidationRegex.*;
 
 
 @RestController
@@ -105,17 +103,43 @@ public class UserController2 {
      * @return BaseResponse<PostLoginRes>
      */
     @ResponseBody
-    @PostMapping("/logIn")
-    public BaseResponse<PostLoginRes> logIn(@RequestBody PostLoginReq postLoginReq){
+    @GetMapping("/oauth/kakao")
+    public BaseResponse<kakaoLoginRes> kakaoCallBack(@RequestParam String code){
         try{
-            // TODO: 로그인 값들에 대한 형식적인 validatin 처리해주셔야합니다!
-            // TODO: 유저의 status ex) 비활성화된 유저, 탈퇴한 유저 등을 관리해주고 있다면 해당 부분에 대한 validation 처리도 해주셔야합니다.
-            PostLoginRes postLoginRes = userProvider2.logIn(postLoginReq);
-            return new BaseResponse<>(postLoginRes);
-        } catch (BaseException exception){
-            return new BaseResponse<>(exception.getStatus());
+            String access_Token = userService2.getkakaoAccessToken(code);
+            kakaoLoginRes kakaoLoginRes = userService2.kakaoLogin(access_Token);
+            return new BaseResponse<>(kakaoLoginRes);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    @ResponseBody
+    @PostMapping("/myaccountbook")
+    public BaseResponse<myAccountBookRes>  myAccountBook(@RequestBody String yearMonth){
+            int userIdxByJwt = 0;
+            String yearMonth1 = yearMonth;
+        try {
+            //jwt에서 idx 추출.
+             userIdxByJwt = jwtService.getUserIdx();
+
+            if(userIdxByJwt <1){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+
+
+            myAccountBookRes res = userProvider2.myAccountBook(userIdxByJwt, yearMonth1);
+
+            return new BaseResponse<>(res);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+    }
+
+
+
 
 
 

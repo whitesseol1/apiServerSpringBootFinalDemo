@@ -64,5 +64,14 @@ public class UserProvider2 {
 
     }
 
+    public myAccountBookRes myAccountBook(int userIdx,String yearMonth) throws BaseException{
+        try{
+            return userDao2.myAccountBook(userIdx, yearMonth);
+        } catch (Exception exception){
+            throw new BaseException(RESPONSE_ERROR);
+        }
+
+    }
+
 
 }

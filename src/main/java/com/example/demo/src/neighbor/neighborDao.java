@@ -5,6 +5,7 @@ import com.example.demo.src.neighbor.model.neighborBoardDetailRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import com.example.demo.src.neighbor.model.neighborBoardListRes;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -73,5 +74,38 @@ public class neighborDao {
                 getBoardParams);
 
     }
+
+    public List<neighborBoardListRes> neighborBoardList(int userIdx){
+        String getNeighborBoardListQuery = "select (select categoryName from categoryDefinition where categoryDefinition.categoryIdx = t1.category ) as category," +
+                "       t1.content, Member.userId, memberAddress.address1 as address," +
+                "      CASE" +
+                "          WHEN TIMEDIFF(NOW(),  t1.updatedAt) < '01:00:00' THEN concat(MINUTE(TIMEDIFF(NOW(),   t1.updatedAt)), '분전')" +
+                "          WHEN TIMEDIFF(NOW(),   t1.updatedAt) < '24:00:00' THEN concat(HOUR(TIMEDIFF(NOW(),   t1.updatedAt)), '시간전')" +
+                "          ELSE concat(DATEDIFF(NOW(),   t1.updatedAt), '일전') END as" +
+                "           writeTime," +
+                "         (select count(*) from Wonder where t1.userIdx = ? and Wonder.boardIdx = t1.boardIdx and Wonder.status = '궁금함' )" +
+                "          as wonderStatus," +
+                "        (select count(*) from neighborBoardComment where t1.boardIdx = neighborBoardComment.boardIdx) as commentCount" +
+                "     from neighborBoard as t1" +
+                "     join Member on t1.userIdx = Member.userIdx" +
+                "     join memberAddress on t1.userIdx = memberAddress.userIdx" +
+                "     where INSTR( memberAddress.address1, SUBSTRING_INDEX((select address1 from memberAddress where userIdx = ?), '동', 1)) >0" +
+                "       or  INSTR( memberAddress.address1, SUBSTRING_INDEX((select address1 from memberAddress where userIdx = ?), '동', 2)) >0" +
+                "       or  INSTR( memberAddress.address1, SUBSTRING_INDEX((select address1 from memberAddress where userIdx = ?), '구', 1)) >0";
+
+        Object[] getNeighborBoardListParams = new Object []{userIdx,userIdx,userIdx,userIdx};
+        return this.jdbcTemplate.query(getNeighborBoardListQuery,
+                (rs,rowNum) -> new neighborBoardListRes(
+                        rs.getString("category"),
+                        rs.getString("content"),
+                        rs.getString("userId"),
+                        rs.getString("address"),
+                        rs.getString("writeTime"),
+                        rs.getInt("wonderStatus"),
+                        rs.getInt("commentCount")),
+                getNeighborBoardListParams );
+    }
+
+
 
 }

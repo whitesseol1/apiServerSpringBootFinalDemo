@@ -77,4 +77,13 @@ public class tradeProvider {
         }
     }
 
+    public List<myChatDetailRes> chatDetail(int userIdx,int chatRoomIdx) throws BaseException{
+       try{
+            return tradeDao.chatDetail(userIdx,chatRoomIdx);
+        } catch (Exception exception){
+            throw new BaseException(RESPONSE_ERROR);
+        }
+
+    }
+
 }

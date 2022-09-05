@@ -7,11 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class myAccountBookRes {
-
-    private String userId;
-    private String profileImg;
-    private int tradeCount;
-    private String price;
-
+public class myChatDetailReq {
+    private int chatRoomIdx;
 }
