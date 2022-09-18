@@ -44,6 +44,16 @@ public class UserProvider2 {
         }
     }
 
+    public int checkKakaoEmail(String kakaoEmail) throws BaseException{
+        try{
+            return userDao2.checkKakaoEmail(kakaoEmail);
+        }catch (Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+
+
     public PostLoginRes logIn(PostLoginReq postLoginReq) throws BaseException{
         User user = userDao2.getPwd(postLoginReq);
         String encryptPwd;
@@ -54,6 +64,12 @@ public class UserProvider2 {
         }
 
         if(user.getPassword().equals(encryptPwd)){
+            if (user.getStatus().equals("사용안함")){
+                throw new BaseException(USERS_INACTIVATE_USER_ID);
+            }else if(user.getStatus().equals("탈퇴함")){
+                throw new BaseException(USERS_QUIT_USER_ID);
+            }
+
             int userIdx = user.getUserIdx();
             String jwt = jwtService.createJwt(userIdx);
             return new PostLoginRes(userIdx,jwt);

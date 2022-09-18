@@ -2,6 +2,7 @@ package com.example.demo.src.user2;
 
 
 import com.example.demo.config.BaseException;
+import com.example.demo.src.user2.model.PostLoginRes;
 import com.example.demo.src.user2.model.PostUserReq;
 import com.example.demo.src.user2.model.PostUserRes;
 import com.example.demo.src.user2.model.kakaoLoginRes;
@@ -76,8 +77,8 @@ public class UserService2 {
             int userIdx = userDao2.createUser(postUserReq);
             int result = userDao2.insertAddress(userIdx, postUserReq.getAddress());
             //jwt 발급.
-            String jwt = jwtService.createJwt(userIdx);
-            return new PostUserRes(jwt, userIdx);
+            //String jwt = jwtService.createJwt(userIdx);
+            return new PostUserRes(userIdx);
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
@@ -86,7 +87,8 @@ public class UserService2 {
     public String getkakaoAccessToken(String code) throws BaseException{
         String access_token = "";
         String refresh_token = "";
-        String reqURL = "https://kauth.kakao.com/app/oauth/token";
+        //String reqURL = "https://kauth.kakao.com/app/oauth/token";
+        String reqURL = "https://kauth.kakao.com/oauth/token";
 
         try {
             URL url = new URL(reqURL);
@@ -101,7 +103,7 @@ public class UserService2 {
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
             sb.append("&client_id=f5ed479443d2f76761183cddd4d486fa"); // TODO REST_API_KEY 입력
-            sb.append("&redirect_uri=http://localhost:8080/app/oauth/kakao"); // TODO 인가코드 받은 redirect_uri 입력
+            sb.append("&redirect_uri=http://localhost:8080/app/users/oauth/kakao"); // TODO 인가코드 받은 redirect_uri 입력
             sb.append("&code=" + code);
             bw.write(sb.toString());
             bw.flush();
@@ -130,13 +132,17 @@ public class UserService2 {
 
             Object obj = jsonParse.parse(result.toString());
             JSONObject json = (JSONObject) obj;
-
+            System.out.println("result.toString() : " + result.toString());
+            System.out.println("jsonParse.parse(result.toString() : " + jsonParse.parse(result.toString()));
+            System.out.println("obj : " + obj);
+            System.out.println("json : " + json);
             access_token = (String) json.get("access_token");
             refresh_token = (String) json.get("refresh_token");
-
+            System.out.println("access_token : " + access_token);
             br.close();
             bw.close();
         } catch (Exception exception) {
+            System.out.println("exception : " + exception);
             throw new BaseException(DATABASE_ERROR);
         }
 
@@ -146,6 +152,10 @@ public class UserService2 {
    public kakaoLoginRes kakaoLogin(String access_Token) throws BaseException{
 
        String reqURL = "https://kapi.kakao.com/v2/user/me";
+       System.out.println("access_Token : " + access_Token);
+       String email = "";
+       String nickName = "";
+       String profileImage = "";
 
        //access_token을 이용하여 사용자 정보 조회
        try {
@@ -160,17 +170,17 @@ public class UserService2 {
            int responseCode = conn.getResponseCode();
            System.out.println("responseCode : " + responseCode);
 
-           //요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
-           BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-           String line = "";
-           StringBuffer result = new StringBuffer();
+               //요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
+               BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+               String line = "";
+               StringBuffer result = new StringBuffer();
 
-           while ((line = br.readLine()) != null) {
-               result.append(line);
-           }
-           System.out.println("response body : " + result);
+               while ((line = br.readLine()) != null) {
+                   result.append(line);
+               }
+               System.out.println("response body : " + result);
 
-           //Gson 라이브러리로 JSON파싱
+               //Gson 라이브러리로 JSON파싱
         /*   JsonParser parser = new JsonParser();
            JsonElement element =  parser.parse(result);
 
@@ -181,42 +191,78 @@ public class UserService2 {
                email = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("email").getAsString();
            }*/
 
-           JSONParser jsonParse = new JSONParser();
-           Object obj = jsonParse.parse(result.toString());
-           JSONObject json = (JSONObject) obj;
-           //변환된 josn객체 안에서 다시 json객체로 얻어내야 하는 것이
-           // 바로 "properties"라는 속성이다.
-           JSONObject props = (JSONObject) json.get("properties");
-           //System.out.println("props : "+ props);
+               JSONParser jsonParse = new JSONParser();
+               Object obj = jsonParse.parse(result.toString());
+               JSONObject json = (JSONObject) obj;
+               //변환된 josn객체 안에서 다시 json객체로 얻어내야 하는 것이
+               // 바로 "properties"라는 속성이다.
+               JSONObject props = (JSONObject) json.get("properties");
+               //System.out.println("props : "+ props);
 
-           String nickName = (String) props.get("nickname");
-           String profileImage = (String) props.get("profile_image");
+               //String nickName = (String)props.get("nickname");
+               //String profileImage = (String)props.get("profile_image");
 
-           JSONObject kakaoAccount = (JSONObject) json.get("kakao_account");
-           String email = (String) kakaoAccount.get("email");
-           System.out.println("email : " + email);
+               JSONObject kakaoAccount = (JSONObject) json.get("kakao_account");
+                   System.out.println("kakaoAccount : " + kakaoAccount);
 
-           JSONObject profile = (JSONObject) kakaoAccount.get("profile");
-           nickName = (String) profile.get("nickname");
-           profileImage = (String) profile.get("profile_image_url");
+           /*if(kakaoAccount.get("email").toString()!= null) {*/
+                   email =  kakaoAccount.get("email").toString();
+                   System.out.println("email : " + email);
 
-           System.out.println("nickName : " + nickName);
-           System.out.println("email : " + email);
 
-           br.close();
-           kakaoLoginRes res = null;
-           res.setEmail(email);
-           res.setNickName(nickName);
-           res.setProfileImage(profileImage);
-           return res;
+              /* }*/
+               if((JSONObject) kakaoAccount.get("profile")!=null) {
+                   JSONObject profile = (JSONObject) kakaoAccount.get("profile");
+                   if(profile.get("nickname").toString()!=null){
+                       nickName = profile.get("nickname").toString();
+                       System.out.println("nickName : " + nickName);
+
+                   }
+                   if(profile.get("profile_image_url").toString()!=null){
+                       profileImage = profile.get("profile_image_url").toString();
+                       System.out.println("profileImage : " + profileImage);
+
+                   }
+               }
+
+               br.close();
+
        } catch (Exception exception) {
+           System.out.println("exception2 : " + exception);
            throw new BaseException(DATABASE_ERROR);
        }
 
-
+       return new kakaoLoginRes(nickName,profileImage,email);
 
 
    }
+
+   public PostLoginRes kakaoLogin2(kakaoLoginRes res) throws BaseException{
+        String jwt=null;
+        int userIdx =0;
+        try {
+            if(res.getEmail()!=null) {
+                int result = userProvider2.checkKakaoEmail(res.getEmail());
+                System.out.println("res.getEmail : " + res.getEmail());
+                if (result == 1) {
+                    userIdx = userDao2.selectKakaoUser(res.getEmail()); //카카오 로그인 한 적 있을때(카카오이메일은중복없는것으로가정)
+                    jwt = jwtService.createJwt(userIdx);
+                    //return new PostLoginRes(userIdx, jwt);
+                } else if (result == 0) {
+                    userIdx = userDao2.insertKakaoUser(res);
+                    //카카오 로그인 한 적 없으면 insert(기존 회원가입 정보 있더라도 카카오 정보 저장을 위한 새로운 userIdx를 insert)
+                    jwt = jwtService.createJwt(userIdx);
+                    //return new PostLoginRes(userIdx, jwt);
+                }
+            }
+
+        }catch(BaseException exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+       return new PostLoginRes(userIdx, jwt);
+   }
+
+
 
 
 }

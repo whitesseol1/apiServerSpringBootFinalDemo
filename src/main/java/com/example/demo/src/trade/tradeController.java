@@ -1,26 +1,15 @@
 package com.example.demo.src.trade;
 
-import com.example.demo.src.user2.model.PostLoginReq;
-import com.example.demo.src.user2.model.PostLoginRes;
-import com.example.demo.utils.JwtService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.example.demo.src.user2.UserProvider2;
-import com.example.demo.src.user2.UserService2;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
 import com.example.demo.src.trade.model.*;
 import com.example.demo.utils.JwtService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import static com.example.demo.config.BaseResponseStatus.*;
 
 @RestController
 @RequestMapping("/app/trade")
@@ -173,6 +162,25 @@ public class tradeController {
         try {
             List<myChatDetailRes> chatDetail = tradeProvider.chatDetail(userIdxByJwt, chatRoomIdx);
             return new BaseResponse<>(chatDetail);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    @ResponseBody
+    @PostMapping("/tradewrite")
+  public BaseResponse<Integer> tradeWrite(@RequestBody tradeWriteReq req) {
+        int userIdxByJwt = 0;
+        try {
+            //jwt에서 idx 추출.
+            userIdxByJwt = jwtService.getUserIdx();
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+        try {
+            int boardIdx = tradeService.tradeWrite(userIdxByJwt, req);
+            return new BaseResponse<>(boardIdx);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
         }

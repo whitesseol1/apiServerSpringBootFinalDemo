@@ -40,12 +40,36 @@ public class UserDao2 {
 
     }
 
+    public int checkKakaoEmail(String kakaoEmail){
+        String checkKakaoEmailQuery = "select exists(select userId from Member where kakaoEmail = ?)";
+        String checkKakaoEmailParams = kakaoEmail;
+        return this.jdbcTemplate.queryForObject(checkKakaoEmailQuery,
+                int.class,
+                checkKakaoEmailParams);
+    }
+
+    public int selectKakaoUser(String kakaoEmail){
+        String selectKakaoUserQuery = "select userIdx from Member where kakaoEmail = ?";
+        String selectKakaoUserParams = kakaoEmail;
+        return this.jdbcTemplate.queryForObject(selectKakaoUserQuery,
+                int.class,
+                selectKakaoUserParams);
+    }
+
     public int createUser(PostUserReq postUserReq){
         String createUserQuery = "insert into Member (userName, userId, passWord, email, phone, profileImg, status) VALUES (?,?,?,?,?,?, 1)";
         Object[] createUserParams = new Object[]{postUserReq.getUserName(), postUserReq.getId(), postUserReq.getPassword(), postUserReq.getEmail(), postUserReq.getPhone(), postUserReq.getUserImg()};
         this.jdbcTemplate.update(createUserQuery, createUserParams);
-        String lastInserIdQuery = "select last_insert_id()";
-        return this.jdbcTemplate.queryForObject(lastInserIdQuery,int.class);
+        String lastInsertIdQuery = "select last_insert_id()";
+        return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
+    }
+
+    public int insertKakaoUser(kakaoLoginRes res){
+        String insertKakaoUserQuery = "insert into Member (email, kakaoNickName, kakaoEmail, kakaoProfileImg, status) VALUES (?,?,?,?,1)";
+        Object[] insertKakaoUserParams =  new Object[]{res.getEmail(), res.getNickName(), res.getEmail(), res.getProfileImage()};
+        this.jdbcTemplate.update(insertKakaoUserQuery,insertKakaoUserParams);
+        String lastInsertUserQuery = "select last_insert_id()";
+        return this.jdbcTemplate.queryForObject(lastInsertUserQuery,int.class);
     }
 
     public int insertAddress(int userIdx, String address){
@@ -57,7 +81,7 @@ public class UserDao2 {
 
 
     public User getPwd(PostLoginReq postLoginReq){
-        String getPwdQuery = "select userIdx, passWord,email,userName,userId from Member where userId = ?";
+        String getPwdQuery = "select userIdx, passWord,email,userName,userId,status from Member where userId = ?";
         String getPwdParams = postLoginReq.getId();
 
         return this.jdbcTemplate.queryForObject(getPwdQuery,
@@ -66,7 +90,8 @@ public class UserDao2 {
                         rs.getString("userId"),
                         rs.getString("userName"),
                         rs.getString("passWord"),
-                        rs.getString("email")
+                        rs.getString("email"),
+                        rs.getString("status")
                 ),
                 getPwdParams
         );

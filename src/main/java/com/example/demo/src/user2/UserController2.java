@@ -2,6 +2,8 @@ package com.example.demo.src.user2;
 
 import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
+import com.example.demo.src.user2.model.PostLoginReq;
+import com.example.demo.src.user2.model.PostLoginRes;
 import com.example.demo.src.user2.model.PostUserReq;
 import com.example.demo.src.user2.model.PostUserRes;
 import com.example.demo.src.user2.model.kakaoLoginRes;
@@ -93,22 +95,47 @@ public class UserController2 {
     }
 
 
+    /**
+     * 로그인 API_1
+     * [POST] /users/logIn
+     * @return BaseResponse<PostLoginRes>
+     */
+    @ResponseBody
+    @PostMapping("/logIn")
+    public BaseResponse<PostLoginRes> logIn(@RequestBody PostLoginReq postLoginReq){
+        try{
+            // TODO: 로그인 값들에 대한 형식적인 validatin 처리해주셔야합니다!
+            // TODO: 유저의 status ex) 비활성화된 유저, 탈퇴한 유저 등을 관리해주고 있다면 해당 부분에 대한 validation 처리도 해주셔야합니다.
+            PostLoginRes postLoginRes = userProvider2.logIn(postLoginReq);
+            return new BaseResponse<>(postLoginRes);
+        } catch (BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
 
 
 
 
     /**
-     * 로그인 API
-     * [POST] /users/logIn
+     * 로그인 API_2_카카오로그인
+     * 회원가입 및 로그인 (기존 회원이 처음 카카오 로그인시 기존 회원 정보를 불러올 수 없어서
+     * 카카오 인증 후 우리 서버에서는 새로운 userIdx를 발급하고 카카오정보를 저장 후 jwt발급 한다.)
+     * - 다음 로그인에는 기존 카카오 정보가 저장되 있으면 userIdx를 조회해 반환한다.
+     * 우리서버에 카카오 정보가 있으면 userIdx 조회하고, 없으면 저장 후 userIdx 발급, 반환하므로
+     * 카카오로 회원가입 & 카카오로 로그인  두가지 기능이 다 포함된다.
+     * (카카오로 로그인시 기존 회원 가입 정보가 있는 회원은 기존 정보를 조회할 수 없어 혼선이 있을 수 있어 '회원가입 및 로그인'
+     * 으로 지칭하여 새로운 계정으로 접속됨을 알려준다.)
+     * [POST] /oauth/kakao
      * @return BaseResponse<PostLoginRes>
      */
     @ResponseBody
     @GetMapping("/oauth/kakao")
-    public BaseResponse<kakaoLoginRes> kakaoCallBack(@RequestParam String code){
+    public BaseResponse<PostLoginRes> kakaoCallBack(@RequestParam String code){
         try{
             String access_Token = userService2.getkakaoAccessToken(code);
             kakaoLoginRes kakaoLoginRes = userService2.kakaoLogin(access_Token);
-            return new BaseResponse<>(kakaoLoginRes);
+            PostLoginRes res = userService2.kakaoLogin2(kakaoLoginRes);
+            return new BaseResponse<>(res);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }

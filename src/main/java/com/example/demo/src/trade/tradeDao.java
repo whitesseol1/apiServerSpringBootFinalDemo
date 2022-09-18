@@ -1,18 +1,8 @@
 package com.example.demo.src.trade;
 
-import com.example.demo.src.user2.UserProvider2;
-import com.example.demo.src.user2.UserService2;
-import com.example.demo.src.user2.model.myAccountBookRes;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import com.example.demo.config.BaseException;
-import com.example.demo.config.BaseResponse;
 import com.example.demo.src.trade.model.*;
-import com.example.demo.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.web.bind.annotation.*;
-import static com.example.demo.config.BaseResponseStatus.*;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -247,6 +237,23 @@ public class tradeDao {
                         rs.getString("writer"),
                         rs.getString("writeTime")),
                 getMyChatDetailParams);
+    }
+
+    public int tradeWrite(int userIdx, tradeWriteReq req){
+        String tradeWriteQuery = "INSERT INTO `tradeBoard` (tradeStatus, tradeTitle, content, price, itemCategory, isOffer, userIdx, status)" +
+                "value ('거래대기', ?, ?, ?,?, ?, ?, '생성됨' )";
+        Object[] tradeWriteParams = new Object[]{req.getTradeTitle(), req.getContent(), req.getPrice(), req.getItemCategory(), req.getIsOffer(), userIdx};
+        this.jdbcTemplate.update(tradeWriteQuery, tradeWriteParams);
+
+        String lastInserIdQuery = "select last_insert_id()";
+        return this.jdbcTemplate.queryForObject(lastInserIdQuery,int.class);
+    }
+
+    public int tradeWrite2(int boardIdx, String imgUrl ){
+        String tradeWrite2Query = "INSERT INTO `tradeImg` (boardIdx, imgUrl, status)" +
+                "value (?, ?,'생성됨' )";
+        Object[] tradeWrite2Params = new Object[]{boardIdx, imgUrl};
+        return this.jdbcTemplate.update(tradeWrite2Query, tradeWrite2Params);
     }
 
 
