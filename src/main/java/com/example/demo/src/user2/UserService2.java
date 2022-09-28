@@ -263,6 +263,26 @@ public class UserService2 {
    }
 
 
+   public int insertKeywordAlarm(String keyword, int userIdx) throws BaseException{
+
+      try{
+          int result = userDao2.insertKeywordAlarm(keyword, userIdx);
+          return result;
+      }catch(Exception exception){
+          throw new BaseException(DATABASE_ERROR);
+      }
+
+   }
+
+   public String neighborSet(String neighbor, int userIdx) throws BaseException{
+        //try{
+           String result = userDao2.neighborSet(neighbor, userIdx);
+           return result;
+      // }catch(Exception exception){
+       //    throw new BaseException(DATABASE_ERROR);
+      // }
+
+   }
 
 
 }

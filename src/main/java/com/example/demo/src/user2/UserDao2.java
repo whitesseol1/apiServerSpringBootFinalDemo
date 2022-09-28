@@ -117,5 +117,61 @@ public class UserDao2 {
 
     }
 
+    public int insertKeywordAlarm(String keyword, int userIdx){
+        String selectKeywordAlarmQuery = "select count(*) from `keywordAlarm` where userIdx = ? and keyword = ?";
+        Object[] selectKeywordAlarmParams = new Object[]{userIdx, keyword};
+        int result = this.jdbcTemplate.queryForObject(selectKeywordAlarmQuery,int.class,selectKeywordAlarmParams);
+
+        if (result <1 ) {
+            String insertKeywordAlarmQuery = "insert into `keywordAlarm` (userIdx, keyword, status) values (?, ?, '생성됨')";
+            Object[] insertKeywordAlarmParams = new Object[]{userIdx, keyword};
+            return this.jdbcTemplate.update(insertKeywordAlarmQuery, insertKeywordAlarmParams);
+        }else {
+            return 0;
+        }
+
+    }
+
+    public String neighborSet(String neighbor, int userIdx){
+        String selectNeighborQuery = "select address1, address2, count(*) as count from `memberAddress` where userIdx = ?";
+        userAddressRes res = this.jdbcTemplate.queryForObject(selectNeighborQuery,
+                (rs,rowNum)-> new userAddressRes(
+                        rs.getString("address1"),
+                        rs.getString("address2"),
+                        rs.getInt("count")), userIdx);
+
+        String result = "";
+        int result2 = 0;
+        System.out.println("확인 두번째" + (res.getAddress1() != null ));
+        if ((res.getAddress1() == null || res.getAddress1().equals(""))&& res.getCount() <1){
+            String neighborSetQuery = "insert into `memberAddress` (address2, userIdx, status) value (?, ?, '생성됨')";
+            Object[] selectKeywordAlarmParams = new Object[]{neighbor, userIdx};
+             result2 = this.jdbcTemplate.update(neighborSetQuery,int.class,selectKeywordAlarmParams);
+            if(result2 >0){
+                result = "나의 동네로 설정되었습니다.";
+            }else{
+                result = "설정에 실패하였습니다.";
+            }
+            System.out.println("확인");
+        }else if (res.getAddress1() != null && res.getAddress2() == null && !res.getAddress1().equals(neighbor) && res.getCount() >0){
+            String neighborSetQuery = "update `memberAddress` set address2 = ? where userIdx = ?";
+            String address2 = neighbor;
+            Object[] neighborSetParams = new Object[]{address2, userIdx};
+            result2 = this.jdbcTemplate.update(neighborSetQuery,int.class,neighborSetParams);
+            if(result2 >0){
+                result = "나의 동네로 설정되었습니다.";
+            }else{
+                result = "설정에 실패하였습니다.";
+            }
+            System.out.println("확인2"+!res.getAddress1().equals(neighbor));
+        }else if (res.getAddress1() != null && res.getAddress2() != null && res.getCount() >1){
+            result = "이미 나의 동네(최대 2개까지)가 설정 되어 있습니다.";
+        }else if (res.getAddress1().equals(neighbor)){
+            result = "이미 등록된 동네입니다.";
+        }
+
+        return result;
+    }
+
 
 }

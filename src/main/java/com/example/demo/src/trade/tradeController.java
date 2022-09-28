@@ -186,4 +186,44 @@ public class tradeController {
         }
     }
 
+
+    @ResponseBody
+    @PostMapping("/chatwrite")
+  public BaseResponse<Integer> chatWrite(@RequestBody chatWriteReq req){
+        int userIdxByJwt = 0;
+        try {
+            //jwt에서 idx 추출.
+            userIdxByJwt = jwtService.getUserIdx();
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+        try {
+            int result = tradeService.chatWrite(userIdxByJwt, req);
+            //채팅을 처음 시작할때는 boardIdx, content를 받고 이미 시작돼 있을 경우는 roomIdx와 content를 받는다.
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    @ResponseBody
+    @GetMapping("/interest")
+  public BaseResponse<Integer>  insertInterest(@RequestParam int boardIdx){
+        int userIdxByJwt = 0;
+        try {
+            //jwt에서 idx 추출.
+            userIdxByJwt = jwtService.getUserIdx();
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+        try{
+            int result = tradeService.insertInterest(userIdxByJwt, boardIdx);
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
 }

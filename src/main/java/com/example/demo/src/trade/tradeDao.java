@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
@@ -256,5 +257,82 @@ public class tradeDao {
         return this.jdbcTemplate.update(tradeWrite2Query, tradeWrite2Params);
     }
 
+    public int chatWrite(int userIdx, chatWriteReq req){
+
+
+
+        //채팅글 처음 생성시(roomIdx가 없을때)
+            String user2SelectQuery = "SELECT userIdx FROM `tradeBoard` WHERE boardIdx = ?";
+            int user2SelectParam = req.getBoardIdx();
+            int userIdx2 = this.jdbcTemplate.queryForObject(user2SelectQuery,int.class,user2SelectParam);
+
+
+            String chatRoomInsertQuery = "INSERT INTO `chatRoom` (boardIdx, status) VALUE (?, '생성됨')";
+            int chatRoomInsertParam = req.getBoardIdx();
+            this.jdbcTemplate.update(chatRoomInsertQuery, chatRoomInsertParam);
+            String lastInsertIdxQuery = "select last_insert_id()";
+            int chatRoomIdx = this.jdbcTemplate.queryForObject(lastInsertIdxQuery, int.class);
+
+        String chatContentInsertQuery = "INSERT INTO `chatContent` (roomIdx, userIdx,userIdx2, content)" +
+                "value (?, ?, ?, ?)";
+        Object[] chatContentInsertParams = new Object[]{chatRoomIdx, userIdx, userIdx2, req.getContent()};
+        return this.jdbcTemplate.update(chatContentInsertQuery, chatContentInsertParams);
+
+    }
+
+    public chatWriteUserRes chatWrite2(chatWriteReq req){
+        //채팅글 생성이 되어있을때
+        int userIdx2 = 0;
+        String selectQuery = "SELECT userIdx, userIdx2 FROM `chatContent` WHERE roomIdx = ? group by roomIdx";
+        int selectParam = req.getRoomIdx();
+        return this.jdbcTemplate.queryForObject(selectQuery,
+                (rs,rowNum)-> new chatWriteUserRes(
+                        rs.getInt("userIdx"),
+                        rs.getInt("userIdx2")), selectParam);
+
+    }
+
+    public int chatWrite3(int userIdx, chatWriteReq req, chatWriteUserRes res){
+
+        int userIdx2 = 0;
+        if( res.getUserIdx() == userIdx ){
+            userIdx2 = res.getUserIdx2();
+        }else if (res.getUserIdx2() == userIdx){
+            userIdx2 = res.getUserIdx();
+        }
+        int chatRoomIdx = req.getRoomIdx();
+
+
+        String chatContentInsertQuery = "INSERT INTO `chatContent` (roomIdx, userIdx,userIdx2, content)" +
+                "value (?, ?, ?, ?)";
+        Object[] chatContentInsertParams = new Object[]{chatRoomIdx, userIdx, userIdx2, req.getContent()};
+        return this.jdbcTemplate.update(chatContentInsertQuery, chatContentInsertParams);
+
+    }
+@Transactional
+    public int insertInterest(int userIdx, int boardIdx){
+       this.jdbcTemplate.update("UPDATE `tradeBoard` SET `interest` =  0 WHERE `interest` is null");
+
+        String selectInterestListQuery = "SELECT COUNT(*) FROM `interestList` where userIdx = ? and boardIdx = ?";
+        Object[] selectInterestListParam = new Object[]{userIdx, boardIdx};
+        int countResult = this.jdbcTemplate.queryForObject(selectInterestListQuery, int.class, selectInterestListParam);
+
+        int result1 = 0; int result2 = 0;
+       if(countResult <1 ) {
+           String interestInsertBoardQuery = "UPDATE `tradeBoard` SET interest = interest+1 WHERE boardIdx = ?";
+           int interestInsertBoardParam = boardIdx;
+           result1 = this.jdbcTemplate.update(interestInsertBoardQuery, interestInsertBoardParam);
+
+           String insertInterestListQuery = "INSERT INTO `interestList` (boardIdx,interestStatus, userIdx)" +
+                   "value (?, '관심있음', ?)";
+           Object[] insertInterestListParams = new Object[]{boardIdx, userIdx};
+           result2 = this.jdbcTemplate.update(insertInterestListQuery, insertInterestListParams);
+       }
+       if(result1 == 1 && result2 == 1){
+           return result2;
+       }else{
+           return 0;
+       }
+    }
 
 }

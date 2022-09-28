@@ -165,9 +165,42 @@ public class UserController2 {
 
     }
 
+    @ResponseBody
+    @GetMapping("/keyword")
+    public BaseResponse<Integer> keywordAlarm(@RequestParam String keyword){
+        int userIdxByJwt = 0;
 
+        try{
+            //jwt에서 idx 추출.
+            userIdxByJwt = jwtService.getUserIdx();
+            if(userIdxByJwt <1){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
 
+            int result = userService2.insertKeywordAlarm(keyword,userIdxByJwt);
+            return new BaseResponse<>(result);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 
+    @ResponseBody
+    @GetMapping("/neighborset")
+    public BaseResponse<String> neighborSet(@RequestParam String neighbor){
+        int userIdxByJwt = 0;
+        try{
+            //jwt에서 idx 추출.
+            userIdxByJwt = jwtService.getUserIdx();
+            if(userIdxByJwt <1) {
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            String result = userService2.neighborSet(neighbor, userIdxByJwt);
+            return new BaseResponse<>(result);
+        }catch(BaseException exception){
+                return new BaseResponse<>((exception.getStatus()));
+            }
+    }
 
 
 

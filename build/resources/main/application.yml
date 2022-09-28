@@ -9,6 +9,6 @@ spring:
     platform: mysql
     url: jdbc:mysql://whitesseol1.c0ysjtrtr9go.ap-northeast-2.rds.amazonaws.com/MyDB?autoReconnect=true # 변경해주세요
     username:  whitesseol1
-    password:  5858ho8199!
+    password:  Hochang016!
     driver-class-name: com.mysql.cj.jdbc.Driver # mysql 8버전
     # driver-class-name: com.mysql.jdbc.Driver # mysql 5버전

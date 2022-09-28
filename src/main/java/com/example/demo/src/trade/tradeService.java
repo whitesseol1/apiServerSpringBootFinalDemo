@@ -1,6 +1,8 @@
 package com.example.demo.src.trade;
 
 import com.example.demo.config.BaseException;
+import com.example.demo.src.trade.model.chatWriteReq;
+import com.example.demo.src.trade.model.chatWriteUserRes;
 import com.example.demo.src.trade.model.tradeWriteReq;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
@@ -8,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static com.example.demo.config.BaseResponseStatus.RESPONSE_ERROR;
 import static com.example.demo.config.BaseResponseStatus.*;
 
 @Service
@@ -39,7 +40,7 @@ public class tradeService {
                 throw new BaseException(REQUEST_ERROR);
             }else if (req.getImgUrl() == null){
                 throw new BaseException(REQUEST_ERROR);
-            }
+            } //필수값 체크 (거래게시글제목,내용,카테고리,사진)
             int boardIdx = tradeDao.tradeWrite(userIdx,req);
             for(int i = 0; i < req.getImgUrl().size(); i++){
                 int isSuccess = tradeDao.tradeWrite2(boardIdx, req.getImgUrl().get(i));
@@ -47,6 +48,31 @@ public class tradeService {
             return boardIdx;
         } catch (Exception exception){
             throw new BaseException(RESPONSE_ERROR);
+        }
+    }
+
+    public int chatWrite(int userIdx, chatWriteReq req) throws BaseException{
+        try{
+            if(req.getRoomIdx() == 0) { //roomIdx(채팅룸)처음 생성시
+                int result = tradeDao.chatWrite(userIdx, req);
+                return result;
+            } else { //roomIdx(채팅룸) 생성되어있을때
+                chatWriteUserRes res = tradeDao.chatWrite2(req);
+                int result = tradeDao.chatWrite3(userIdx, req, res);
+                return result;
+            }
+        } catch (Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+
+    }
+
+    public int insertInterest(int userIdx, int boardIdx) throws BaseException{
+        try{
+             int result = tradeDao.insertInterest(userIdx, boardIdx);
+             return result;
+        }catch (Exception exception){
+           throw new BaseException(DATABASE_ERROR);
         }
     }
 
