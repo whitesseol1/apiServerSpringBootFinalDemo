@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 import static com.example.demo.config.BaseResponseStatus.*;
 
 @Service
@@ -27,7 +29,7 @@ public class tradeService {
         this.jwtService = jwtService;
 
     }
-
+@Transactional
     public int tradeWrite(int userIdx, tradeWriteReq req)  throws BaseException{
         try{
             if(req.getTradeTitle() == null || req.getTradeTitle() == ""){
@@ -67,9 +69,9 @@ public class tradeService {
 
     }
 
-    public int insertInterest(int userIdx, int boardIdx) throws BaseException{
+    public String insertInterest(int userIdx, int boardIdx) throws BaseException{
         try{
-             int result = tradeDao.insertInterest(userIdx, boardIdx);
+             String result = tradeDao.insertInterest(userIdx, boardIdx);
              return result;
         }catch (Exception exception){
            throw new BaseException(DATABASE_ERROR);

@@ -209,7 +209,7 @@ public class tradeController {
 
     @ResponseBody
     @GetMapping("/interest")
-  public BaseResponse<Integer>  insertInterest(@RequestParam int boardIdx){
+  public BaseResponse<String>  insertInterest(@RequestParam int boardIdx){
         int userIdxByJwt = 0;
         try {
             //jwt에서 idx 추출.
@@ -219,7 +219,7 @@ public class tradeController {
         }
 
         try{
-            int result = tradeService.insertInterest(userIdxByJwt, boardIdx);
+            String result = tradeService.insertInterest(userIdxByJwt, boardIdx);
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));

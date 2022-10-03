@@ -2,17 +2,14 @@ package com.example.demo.src.user2;
 
 import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
-import com.example.demo.src.user2.model.PostLoginReq;
-import com.example.demo.src.user2.model.PostLoginRes;
-import com.example.demo.src.user2.model.PostUserReq;
-import com.example.demo.src.user2.model.PostUserRes;
-import com.example.demo.src.user2.model.kakaoLoginRes;
-import com.example.demo.src.user2.model.myAccountBookRes;
+import com.example.demo.src.user2.model.*;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static com.example.demo.config.BaseResponseStatus.*;
 import static com.example.demo.utils.ValidationRegex.*;
@@ -154,8 +151,6 @@ public class UserController2 {
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
 
-
-
             myAccountBookRes res = userProvider2.myAccountBook(userIdxByJwt, yearMonth1);
 
             return new BaseResponse<>(res);
@@ -200,6 +195,25 @@ public class UserController2 {
         }catch(BaseException exception){
                 return new BaseResponse<>((exception.getStatus()));
             }
+    }
+
+    @ResponseBody
+    @GetMapping("/interestlist")
+    public BaseResponse<List<myInterestRes>> interestList(){
+
+        int userIdxByJwt = 0;
+        try {
+            //jwt에서 idx 추출.
+            userIdxByJwt = jwtService.getUserIdx();
+            if (userIdxByJwt < 1) {
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            List<myInterestRes> result = userService2.interestList(userIdxByJwt);
+            return new BaseResponse<>(result);
+        }catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
     }
 
 

@@ -12,7 +12,7 @@ public class neighborBoardDetailCommentRes {
     private String profileImg;
     private String address;
     private String comment;
-    private int like;
+    private int myLikeStatus;
     private String writeTime;
 
 

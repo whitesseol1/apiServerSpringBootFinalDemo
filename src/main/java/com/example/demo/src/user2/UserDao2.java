@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 @Repository
 public class UserDao2 {
@@ -142,35 +143,59 @@ public class UserDao2 {
 
         String result = "";
         int result2 = 0;
-        System.out.println("확인 두번째" + (res.getAddress1() != null ));
         if ((res.getAddress1() == null || res.getAddress1().equals(""))&& res.getCount() <1){
-            String neighborSetQuery = "insert into `memberAddress` (address2, userIdx, status) value (?, ?, '생성됨')";
+            String neighborSetQuery = "insert into `memberAddress` (address1, userIdx, status) value (?, ?, '생성됨')";
             Object[] selectKeywordAlarmParams = new Object[]{neighbor, userIdx};
-             result2 = this.jdbcTemplate.update(neighborSetQuery,int.class,selectKeywordAlarmParams);
+             result2 = this.jdbcTemplate.update(neighborSetQuery,selectKeywordAlarmParams);
             if(result2 >0){
                 result = "나의 동네로 설정되었습니다.";
             }else{
                 result = "설정에 실패하였습니다.";
             }
-            System.out.println("확인");
         }else if (res.getAddress1() != null && res.getAddress2() == null && !res.getAddress1().equals(neighbor) && res.getCount() >0){
-            String neighborSetQuery = "update `memberAddress` set address2 = ? where userIdx = ?";
+            String neighborSetQuery = "update `memberAddress` set `updatedAt` = current_timestamp, address2 = ? where userIdx = ?";
             String address2 = neighbor;
             Object[] neighborSetParams = new Object[]{address2, userIdx};
-            result2 = this.jdbcTemplate.update(neighborSetQuery,int.class,neighborSetParams);
+            result2 = this.jdbcTemplate.update(neighborSetQuery,neighborSetParams);
             if(result2 >0){
                 result = "나의 동네로 설정되었습니다.";
             }else{
                 result = "설정에 실패하였습니다.";
             }
-            System.out.println("확인2"+!res.getAddress1().equals(neighbor));
-        }else if (res.getAddress1() != null && res.getAddress2() != null && res.getCount() >1){
+        }else if (res.getAddress1() != null && res.getAddress2() != null && res.getCount() >0){
             result = "이미 나의 동네(최대 2개까지)가 설정 되어 있습니다.";
         }else if (res.getAddress1().equals(neighbor)){
             result = "이미 등록된 동네입니다.";
         }
 
         return result;
+    }
+
+    public List<myInterestRes> interestList(int userIdx){
+        String myInterestSelectQuery = "select A.boardIdx, C.imgUrl, A.tradeTitle, mA.address1, tR.status, A.price," +
+                "       (select count(*) from chatRoom where chatRoom.boardIdx = A.boardIdx) as chatRoomCount," +
+                "       A.interest," +
+                "       (select interestStatus from interestList aB where aB.boardIdx = B.boardIdx and aB.userIdx = ?) as myStatus" +
+                "      from tradeBoard A" +
+                "      inner join  (select * from interestList" +
+                "                            where userIdx = ? ) B" +
+                "         left join (select * from tradeImg group by boardIdx) C on A.boardIdx = C.boardIdx" +
+                "         left join tradeReservation tR on A.boardIdx = tR.boardIdx" +
+                "         left join memberAddress mA on A.userIdx = mA.userIdx" +
+                "           where A.boardIdx = B.boardIdx" +
+                "               and B.interestStatus = '관심있음'";
+        Object[] myInterestSelectParams = new Object[]{userIdx, userIdx};
+        return this.jdbcTemplate.query(myInterestSelectQuery,
+                (rs,rowNum)-> new myInterestRes(
+                        rs.getInt("boardIdx"),
+                        rs.getString("imgUrl"),
+                        rs.getString("tradeTitle"),
+                        rs.getString("address1"),
+                        rs.getString("status"),
+                        rs.getInt("price"),
+                        rs.getInt("chatRoomCount"),
+                        rs.getInt("interest"),
+                        rs.getString("myStatus")), myInterestSelectParams);
     }
 
 

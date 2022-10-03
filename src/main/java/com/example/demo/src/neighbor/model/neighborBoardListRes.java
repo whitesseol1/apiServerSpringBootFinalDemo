@@ -15,6 +15,7 @@ public class neighborBoardListRes {
     private String address;
     private String writeTime;
     private int wonderStatus;
+    private int empathyStatus;
     private int commentCount;
 
 }

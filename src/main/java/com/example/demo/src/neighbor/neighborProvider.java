@@ -4,7 +4,6 @@ import com.example.demo.config.BaseException;
 import com.example.demo.src.neighbor.model.neighborBoardDetailCommentRes;
 import com.example.demo.src.neighbor.model.neighborBoardDetailRes;
 import com.example.demo.src.neighbor.model.neighborBoardListRes;
-import com.example.demo.src.trade.tradeDao;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.example.demo.config.BaseResponseStatus.*;
+import static com.example.demo.config.BaseResponseStatus.DATABASE_ERROR;
 
 @Service
 public class neighborProvider {
@@ -30,21 +29,21 @@ public class neighborProvider {
         this.jwtService = jwtService;
     }
 
-    public neighborBoardDetailRes neighborBoardDetail(int boardIdx) throws BaseException {
+    public neighborBoardDetailRes neighborBoardDetail(int boardIdx, int userIdx) throws BaseException {
 
-       try{
-            neighborBoardDetailRes res = neighborDao.neighborBoardDetail(boardIdx);
+       //try{
+            neighborBoardDetailRes res = neighborDao.neighborBoardDetail(boardIdx,userIdx);
             return res;
-        } catch (Exception exception) {
-            throw new BaseException(DATABASE_ERROR);
-        }
+        //} catch (Exception exception) {
+        //    throw new BaseException(DATABASE_ERROR);
+        //}
 
     }
 
 
-    public List<neighborBoardDetailCommentRes> neighborBoardComment(int boardIdx) throws BaseException {
+    public List<neighborBoardDetailCommentRes> neighborBoardComment(int boardIdx, int userIdx) throws BaseException {
         try{
-            List<neighborBoardDetailCommentRes> res = neighborDao.neighborBoardComment(boardIdx);
+            List<neighborBoardDetailCommentRes> res = neighborDao.neighborBoardComment(boardIdx,userIdx);
             return res;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);

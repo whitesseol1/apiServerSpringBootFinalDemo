@@ -310,16 +310,21 @@ public class tradeDao {
 
     }
 @Transactional
-    public int insertInterest(int userIdx, int boardIdx){
+    public String insertInterest(int userIdx, int boardIdx){
        this.jdbcTemplate.update("UPDATE `tradeBoard` SET `interest` =  0 WHERE `interest` is null");
 
-        String selectInterestListQuery = "SELECT COUNT(*) FROM `interestList` where userIdx = ? and boardIdx = ?";
+        String selectInterestListQuery = "SELECT interestStatus, COUNT(*) as count FROM `interestList` where userIdx = ? and boardIdx = ?";
         Object[] selectInterestListParam = new Object[]{userIdx, boardIdx};
-        int countResult = this.jdbcTemplate.queryForObject(selectInterestListQuery, int.class, selectInterestListParam);
+        interestRes res = this.jdbcTemplate.queryForObject(selectInterestListQuery,
+                (rs,rowNum)-> new interestRes(
+                        rs.getString("interestStatus"),
+                        rs.getInt("count")
+                ), selectInterestListParam);
 
+        String resultMessage = "";
         int result1 = 0; int result2 = 0;
-       if(countResult <1 ) {
-           String interestInsertBoardQuery = "UPDATE `tradeBoard` SET interest = interest+1 WHERE boardIdx = ?";
+       if(res.getCount() <1 ) {
+           String interestInsertBoardQuery = "UPDATE `tradeBoard` SET `updatedAt` = current_timestamp, interest = interest+1 WHERE boardIdx = ?";
            int interestInsertBoardParam = boardIdx;
            result1 = this.jdbcTemplate.update(interestInsertBoardQuery, interestInsertBoardParam);
 
@@ -327,12 +332,36 @@ public class tradeDao {
                    "value (?, '관심있음', ?)";
            Object[] insertInterestListParams = new Object[]{boardIdx, userIdx};
            result2 = this.jdbcTemplate.update(insertInterestListQuery, insertInterestListParams);
+           if(result1 >0 && result2 >0){
+               resultMessage = "나의 관심목록에 등록되었습니다.";
+           }
+       }else if(res.getCount() >0 && res.getInterestStatus().equals("관심있음")){
+           String interestInsertRollBackBoardQuery = "UPDATE `tradeBoard` SET `updatedAt` = current_timestamp, interest = interest-1 WHERE boardIdx = ?";
+           int interestInsertRollBackBoardParam = boardIdx;
+           result1 = this.jdbcTemplate.update(interestInsertRollBackBoardQuery, interestInsertRollBackBoardParam);
+
+           String insertInterestListQuery = "UPDATE `interestList` SET `updatedAt` = current_timestamp, interestStatus = '관심있음취소' WHERE boardIdx = ? and userIdx = ?";
+           Object[] insertInterestListParams = new Object[]{boardIdx, userIdx};
+           result2 = this.jdbcTemplate.update(insertInterestListQuery, insertInterestListParams);
+           if(result1 >0 && result2 >0){
+               resultMessage = "나의 관심목록에서 취소되었습니다.";
+           }
+
+       }else if(res.getCount() >0 && res.getInterestStatus().equals("관심있음취소")){
+           String interestInsertBoardQuery = "UPDATE `tradeBoard` SET `updatedAt` = current_timestamp, interest = interest+1 WHERE boardIdx = ?";
+           int interestInsertBoardParam = boardIdx;
+           result1 = this.jdbcTemplate.update(interestInsertBoardQuery, interestInsertBoardParam);
+
+           String insertInterestListQuery = "UPDATE `interestList` SET `updatedAt` = current_timestamp, interestStatus = '관심있음' WHERE boardIdx = ? and userIdx = ?";
+           Object[] insertInterestListParams = new Object[]{boardIdx, userIdx};
+           result2 = this.jdbcTemplate.update(insertInterestListQuery, insertInterestListParams);
+           if(result1 >0 && result2 >0){
+               resultMessage = "나의 관심목록에 등록되었습니다.";
+           }
        }
-       if(result1 == 1 && result2 == 1){
-           return result2;
-       }else{
-           return 0;
-       }
+
+           return resultMessage;
+
     }
 
 }

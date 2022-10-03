@@ -17,5 +17,6 @@ public class neighborBoardDetailRes {
     private String profileImg;
     private String createdTime;
     private String refreshStatus;
-    private int wonder;
+    private int empathyStatus;
+    private int wonderStatus;
 }

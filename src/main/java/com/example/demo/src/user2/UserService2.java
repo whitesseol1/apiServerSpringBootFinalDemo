@@ -2,10 +2,7 @@ package com.example.demo.src.user2;
 
 
 import com.example.demo.config.BaseException;
-import com.example.demo.src.user2.model.PostLoginRes;
-import com.example.demo.src.user2.model.PostUserReq;
-import com.example.demo.src.user2.model.PostUserRes;
-import com.example.demo.src.user2.model.kakaoLoginRes;
+import com.example.demo.src.user2.model.*;
 import com.example.demo.utils.JwtService;
 import com.example.demo.utils.SHA256;
 import org.json.simple.JSONObject;
@@ -22,6 +19,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 import static com.example.demo.config.BaseResponseStatus.*;
 
@@ -275,13 +273,22 @@ public class UserService2 {
    }
 
    public String neighborSet(String neighbor, int userIdx) throws BaseException{
-        //try{
+        try{
            String result = userDao2.neighborSet(neighbor, userIdx);
            return result;
-      // }catch(Exception exception){
-       //    throw new BaseException(DATABASE_ERROR);
-      // }
+       }catch(Exception exception){
+           throw new BaseException(DATABASE_ERROR);
+       }
 
+   }
+
+   public List<myInterestRes> interestList(int userIdx) throws BaseException{
+       try{
+           List<myInterestRes> result = userDao2.interestList( userIdx);
+           return result;
+       }catch(Exception exception){
+           throw new BaseException(DATABASE_ERROR);
+       }
    }
 
 
