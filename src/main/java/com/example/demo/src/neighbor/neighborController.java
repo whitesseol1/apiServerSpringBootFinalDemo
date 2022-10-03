@@ -3,10 +3,7 @@ package com.example.demo.src.neighbor;
 
 import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
-import com.example.demo.src.neighbor.model.neighborBoardDetailCommentRes;
-import com.example.demo.src.neighbor.model.neighborBoardDetailRes;
-import com.example.demo.src.neighbor.model.neighborBoardInsertReq;
-import com.example.demo.src.neighbor.model.neighborBoardListRes;
+import com.example.demo.src.neighbor.model.*;
 import com.example.demo.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -114,6 +111,46 @@ public class neighborController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    @ResponseBody
+    @PostMapping("/neighborboardcommentwrite")
+    public BaseResponse<Integer> neighborboardCommentWrite(@RequestBody neighborBoardCommentInsertReq req){
+        try{
+            //jwt에서 idx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+            int commentIdx = neighborService.neighborboardCommentWrite(req,userIdxByJwt);
+            return new BaseResponse<>(commentIdx);
+        }catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    @ResponseBody
+    @PostMapping("/neighborboardcommentwrite2")
+    public BaseResponse<Integer> neighborboardCommentWrite2(@RequestBody neighborBoardCommentInsertReq req){
+        try{
+            //jwt에서 idx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+            int commentIdx = neighborService.neighborboardCommentWrite2(req,userIdxByJwt);
+            return new BaseResponse<>(commentIdx);
+        }catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+     @ResponseBody
+     @GetMapping("/empathy")
+   public BaseResponse<String> insertEmpathy(@RequestParam int boardIdx){
+       try{
+
+           int userIdxByJwt = jwtService.getUserIdx();
+           String result = neighborService.insertEmpathy(userIdxByJwt, boardIdx);
+           return new BaseResponse<>(result);
+       } catch(BaseException exception) {
+           return new BaseResponse<>((exception.getStatus()));
+       }
+
+     }
 
 
 }

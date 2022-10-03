@@ -20,6 +20,7 @@ public class tradeDetailRes {
     private String address;
     private String refreshStatus;
     private String writeTime;
+    private int boardIdx;
 
 
 }

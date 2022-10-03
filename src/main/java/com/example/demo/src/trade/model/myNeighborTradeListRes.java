@@ -17,5 +17,6 @@ private String writeTime;
 private String price;
 private int chatRoomCount;
 private int interest;
+private int boardIdx;
 
 }

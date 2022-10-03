@@ -17,5 +17,6 @@ public class myChatDetailRes {
     private String profileImg;
     private String writer;
     private String writeTime;
+    private int chatIdx;
 
 }

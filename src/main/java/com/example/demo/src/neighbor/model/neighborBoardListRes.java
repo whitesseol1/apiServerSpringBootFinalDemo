@@ -17,5 +17,6 @@ public class neighborBoardListRes {
     private int wonderStatus;
     private int empathyStatus;
     private int commentCount;
+    private int boardIdx;
 
 }

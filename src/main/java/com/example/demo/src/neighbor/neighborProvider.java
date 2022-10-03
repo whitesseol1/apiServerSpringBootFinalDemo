@@ -31,12 +31,12 @@ public class neighborProvider {
 
     public neighborBoardDetailRes neighborBoardDetail(int boardIdx, int userIdx) throws BaseException {
 
-       //try{
+       try{
             neighborBoardDetailRes res = neighborDao.neighborBoardDetail(boardIdx,userIdx);
             return res;
-        //} catch (Exception exception) {
-        //    throw new BaseException(DATABASE_ERROR);
-        //}
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
 
     }
 
@@ -51,15 +51,13 @@ public class neighborProvider {
     }
 
     public List<neighborBoardListRes> neighborBoardList(int userIdx) throws BaseException {
-       /* try{
+        try{
             List<neighborBoardListRes> res = neighborDao. neighborBoardList(userIdx);
             return res;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
-        }*/
+        }
 
-        List<neighborBoardListRes> res = neighborDao. neighborBoardList(userIdx);
-        return res;
     }
 
 }

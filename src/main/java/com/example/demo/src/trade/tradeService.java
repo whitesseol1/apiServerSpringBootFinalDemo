@@ -10,8 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-
 import static com.example.demo.config.BaseResponseStatus.*;
 
 @Service
@@ -29,7 +27,7 @@ public class tradeService {
         this.jwtService = jwtService;
 
     }
-@Transactional
+
     public int tradeWrite(int userIdx, tradeWriteReq req)  throws BaseException{
         try{
             if(req.getTradeTitle() == null || req.getTradeTitle() == ""){
@@ -44,8 +42,10 @@ public class tradeService {
                 throw new BaseException(REQUEST_ERROR);
             } //필수값 체크 (거래게시글제목,내용,카테고리,사진)
             int boardIdx = tradeDao.tradeWrite(userIdx,req);
-            for(int i = 0; i < req.getImgUrl().size(); i++){
+            if(req.getImgUrl() != null){
+              for(int i = 0; i < req.getImgUrl().size(); i++){
                 int isSuccess = tradeDao.tradeWrite2(boardIdx, req.getImgUrl().get(i));
+              }
             }
             return boardIdx;
         } catch (Exception exception){

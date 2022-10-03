@@ -14,5 +14,6 @@ public class myChatRes {
     private String imgUrl;
     private String lastChatMessage;
     private String lastChatTime;
+    private int chatRoomIdx;
 
 }

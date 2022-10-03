@@ -13,4 +13,5 @@ public class userTradeListRes {
     private String tradeImg;
     private String tradeTitle;
     private String price;
+    private int boardIdx;
 }

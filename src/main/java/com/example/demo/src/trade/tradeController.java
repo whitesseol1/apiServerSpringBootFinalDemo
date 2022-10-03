@@ -80,6 +80,35 @@ public class tradeController {
     }
 
     @ResponseBody
+    @RequestMapping("/myfinishtradelist")
+    public BaseResponse<List<myTradeRes>> myFinishTradeList(){
+        try{
+            //jwt에서 idx 추출.
+           int userIdxByJwt = jwtService.getUserIdx();
+           List<myTradeRes> myTradeRes = tradeProvider.myFinishTradeList(userIdxByJwt);
+           return new BaseResponse<>(myTradeRes);
+
+        }catch (BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping("/mybuytradelist")
+    public BaseResponse<List<myTradeRes>> myBuyTradeList(){
+        try{
+            //jwt에서 idx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+            List<myTradeRes> myTradeRes = tradeProvider.myBuyTradeList(userIdxByJwt);
+            return new BaseResponse<>(myTradeRes);
+
+        }catch (BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+    }
+
+    @ResponseBody
     @RequestMapping("/myneighborboardtrade")
   public BaseResponse<List<myNeighborTradeListRes>> myNeighborTradeList(){
 

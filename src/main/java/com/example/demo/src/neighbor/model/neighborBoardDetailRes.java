@@ -19,4 +19,5 @@ public class neighborBoardDetailRes {
     private String refreshStatus;
     private int empathyStatus;
     private int wonderStatus;
+    private int boardIdx;
 }
