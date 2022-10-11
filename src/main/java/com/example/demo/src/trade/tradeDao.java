@@ -344,6 +344,36 @@ public class tradeDao {
         return this.jdbcTemplate.update(tradeWrite2Query, tradeWrite2Params);
     }
 
+
+    public int tradeModify(int userIdx, tradeWriteReq req){
+        String selectUserQuery = "SELECT userIdx FROM `tradeBoard` WHERE boardIdx = ?";
+        int selectUserIdx = this.jdbcTemplate.queryForObject(selectUserQuery,int.class, req.getBoardIdx());
+        int result1=0;
+        if(selectUserIdx == userIdx) {
+            String tradeModifyQuery = "UPDATE `tradeBoard` SET `updatedAt` = current_timestamp," +
+                    " tradeTitle = ?, content = ?, price = ?, itemCategory = ?, isOffer = ?, status = '수정됨' WHERE boardIdx = ?";
+            Object[] tradeModifyParams = new Object[]{req.getTradeTitle(),req.getContent(),req.getPrice(),req.getItemCategory(),req.getIsOffer(),req.getBoardIdx()};
+            result1 = this.jdbcTemplate.update(tradeModifyQuery,tradeModifyParams);
+
+            if(req.getImgUrl() != null){
+                String deleteQuery = "DELETE FROM `tradeImg` WHERE boardIdx = ?";
+                int deleteResult = this.jdbcTemplate.update(deleteQuery, req.getBoardIdx());
+
+                    for (int i = 0; i < req.getImgUrl().size(); i++) {
+                        String insertImgQuery = "INSERT INTO `tradeImg` (boardIdx, imgUrl, status)" +
+                                "value (?, ?,'수정됨' )";
+                        Object[] insertImgParams = new Object[]{req.getBoardIdx(), req.getImgUrl().get(i)};
+                        this.jdbcTemplate.update(insertImgQuery, insertImgParams);
+
+                    }
+            }
+
+        }
+
+        return result1;
+
+    }
+
     public int chatWrite(int userIdx, chatWriteReq req){
 
 

@@ -16,5 +16,6 @@ public class tradeWriteReq {
     private String itemCategory;
     private List<String> imgUrl;
     private String isOffer;
+    private int boardIdx;
 
 }

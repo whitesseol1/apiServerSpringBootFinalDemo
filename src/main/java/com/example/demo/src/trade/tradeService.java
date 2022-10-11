@@ -29,7 +29,7 @@ public class tradeService {
     }
 
     public int tradeWrite(int userIdx, tradeWriteReq req)  throws BaseException{
-        try{
+       // try{
             if(req.getTradeTitle() == null || req.getTradeTitle() == ""){
                 throw new BaseException(REQUEST_ERROR);
             }else if(req.getContent() == null || req.getContent() == ""){
@@ -48,10 +48,34 @@ public class tradeService {
               }
             }
             return boardIdx;
+       // } catch (Exception exception){
+       //     throw new BaseException(RESPONSE_ERROR);
+       // }
+    }
+
+    public int tradeModify(int userIdx, tradeWriteReq req) throws BaseException{
+        try{
+            if(req.getTradeTitle() == null || req.getTradeTitle() == ""){
+                throw new BaseException(REQUEST_ERROR);
+            }else if(req.getContent() == null || req.getContent() == ""){
+                throw new BaseException(REQUEST_ERROR);
+            }else if(req.getPrice() == 0){
+                throw new BaseException(REQUEST_ERROR);
+            }else if (req.getItemCategory() == null || req.getItemCategory() == ""){
+                throw new BaseException(REQUEST_ERROR);
+            }else if (req.getImgUrl() == null){
+                throw new BaseException(REQUEST_ERROR);
+            }else if (req.getBoardIdx() == 0){
+                throw new BaseException(REQUEST_ERROR);
+            }//필수값 체크 (거래게시글제목,내용,카테고리,사진)
+            int result = tradeDao.tradeModify(userIdx,req);
+
+            return result;
         } catch (Exception exception){
             throw new BaseException(RESPONSE_ERROR);
         }
     }
+
 
     public int chatWrite(int userIdx, chatWriteReq req) throws BaseException{
         try{

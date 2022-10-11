@@ -215,6 +215,25 @@ public class tradeController {
         }
     }
 
+    @ResponseBody
+    @PostMapping("/trademodify")
+  public BaseResponse<Integer> tradeModify(@RequestBody tradeWriteReq req) {
+        int userIdxByJwt = 0;
+        try {
+            //jwt에서 idx 추출.
+            userIdxByJwt = jwtService.getUserIdx();
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+        try {
+            int result = tradeService.tradeModify(userIdxByJwt, req);
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
 
     @ResponseBody
     @PostMapping("/chatwrite")
