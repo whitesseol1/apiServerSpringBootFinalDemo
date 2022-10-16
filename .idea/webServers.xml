@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="b5e8ed5d-791c-4a9a-8a14-9ceff42c9616" name="api-server-spring-boot-final" url="https://seol.shop">
+        <fileTransfer rootFolder="/var/www/api-server-spring-boot-final" accessType="SFTP" host="3.36.166.69" port="22" sshConfigId="10eb592b-49b6-4def-aaa3-98ff84ecbec2" sshConfig="ubuntu@3.36.166.69:22 key" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
