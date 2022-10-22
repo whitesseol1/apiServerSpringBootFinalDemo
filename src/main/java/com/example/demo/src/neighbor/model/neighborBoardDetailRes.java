@@ -20,4 +20,5 @@ public class neighborBoardDetailRes {
     private int empathyStatus;
     private int wonderStatus;
     private int boardIdx;
+
 }

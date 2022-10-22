@@ -21,8 +21,9 @@ public class tradeDao {
 
     public List<myChatRes> myChatList(int userIdx) {
         String getMyChatListQuery =
-                "select distinct `t3`.address1, t4.profileImg, t4.userId, t5.imgUrl, lastChatMessage," +
-                        "    CASE" +
+                "select distinct `t3`.address1, t4.profileImg, t4.userId, lastChatMessage," +
+                        "  (select imgUrl from tradeImg where boardIdx = t2.boardIdx limit 1) as imgUrl, " +
+                        "    CASE " +
                         "    WHEN TIMEDIFF(NOW(), lastChatMessageTimestamp) <'01:00:00' THEN concat(MINUTE(TIMEDIFF(NOW(), lastChatMessageTimestamp)), '분전')" +
                         "    WHEN TIMEDIFF(NOW(), lastChatMessageTimestamp) <'24:00:00' THEN concat(HOUR(TIMEDIFF(NOW(), lastChatMessageTimestamp)), '시간전')" +
                         "    ELSE concat(DATEDIFF(NOW(), lastChatMessageTimestamp), '일전') END as lastChatMessageTimestamp2," +
@@ -95,7 +96,7 @@ public class tradeDao {
     }
 
     public List<myTradeRes> myFinishTradeList(int userIdx) {
-        String getMyTradeListQuery = "select t1.userIdx, t1.boardIdx, t1.tradeTitle, t2.imgUrl, t1.tradeStatus, FORMAT(t1.price , 0) as price , `t3`.address1 as address, t1.interest," +
+        String getMyTradeListQuery = "select t1.userIdx, t1.boardIdx, t1.tradeTitle, t1.tradeStatus, FORMAT(t1.price , 0) as price , `t3`.address1 as address, t1.interest," +
                 "       t1.refresh, " +
                 "         CASE " +
                 "      WHEN TIMEDIFF(NOW(), t1.refreshStatus) < '01:00:00' THEN concat(MINUTE(TIMEDIFF(NOW(), t1.refreshStatus)), '분전')" +
@@ -109,8 +110,8 @@ public class tradeDao {
                 ", (select count(*) from tradeBoard" +
                 "    join chatRoom as chatRoom on tradeBoard.boardIdx = chatRoom.boardIdx" +
                 "                   where tradeBoard.boardIdx = t4.boardIdx)" +
-                "    as 'chatRoomCount'" +
-                "from tradeBoard as `t1` left outer join tradeImg as `t2` on t1.boardIdx = `t2`.boardIdx left outer join `memberAddress` as `t3`" +
+                "    as 'chatRoomCount', (select imgUrl from tradeImg where boardIdx = t1.boardIdx limit 1) as imgUrl" +
+                "  from tradeBoard as `t1` left outer join tradeImg as `t2` on t1.boardIdx = `t2`.boardIdx left outer join `memberAddress` as `t3`" +
                 "   on t1.userIdx = t3.userIdx left outer join `chatRoom` as `t4` on `t1`.boardIdx = t4.boardIdx" +
                 "    where t1.userIdx = ? and t1.tradeStatus = '거래완료' group by `t1`.boardIdx";
         int getMyTradeListParams = userIdx;
@@ -133,7 +134,7 @@ public class tradeDao {
     }
 
     public List<myTradeRes> myBuyTradeList(int userIdx){
-        String getMyTradeListQuery = "select t1.userIdx, t1.boardIdx, t1.tradeTitle, t2.imgUrl, t1.tradeStatus, FORMAT(t1.price , 0) as price , `t3`.address1 as address, t1.interest,"+
+        String getMyTradeListQuery = "select t1.userIdx, t1.boardIdx, t1.tradeTitle, t1.tradeStatus, FORMAT(t1.price , 0) as price , `t3`.address1 as address, t1.interest,"+
                " t1.refresh,"+
                 "CASE "+
         "WHEN TIMEDIFF(NOW(), t1.refreshStatus) < '01:00:00' THEN concat(MINUTE(TIMEDIFF(NOW(), t1.refreshStatus)), '분전') "+
@@ -146,7 +147,7 @@ public class tradeDao {
                 ", (select count(*) from tradeBoard "+
         "join chatRoom as chatRoom on tradeBoard.boardIdx = chatRoom.boardIdx "+
         "where tradeBoard.boardIdx = t4.boardIdx) "+
-        "as 'chatRoomCount'"+
+        "as 'chatRoomCount', (select imgUrl from tradeImg where boardIdx = t1.boardIdx limit 1) as imgUrl "+
         "from tradeBoard as `t1` left outer join tradeImg as `t2` on t1.boardIdx = `t2`.boardIdx left outer join `memberAddress` as `t3` "+
         "on t1.userIdx = t3.userIdx left outer join `chatRoom` as `t4` on `t1`.boardIdx = t4.boardIdx "+
         "left join buySellRecord bSR on t1.boardIdx = bSR.boardIdx "+
@@ -174,7 +175,7 @@ public class tradeDao {
 
 
     public List<myNeighborTradeListRes> myNeighborTradeList(int userIdx){
-        String getMyNeighborTradeListQuery = "select t3.imgUrl, t1.tradeTitle, t2.address1 as address," +
+        String getMyNeighborTradeListQuery = "select (select imgUrl from tradeImg where boardIdx = t1.boardIdx limit 1) as imgUrl, t1.tradeTitle, t2.address1 as address," +
                 "           CASE" +
                 "          WHEN TIMEDIFF(NOW(),  t1.refreshStatus) < '01:00:00' THEN concat(MINUTE(TIMEDIFF(NOW(),   t1.refreshStatus)), '분전')" +
                 "          WHEN TIMEDIFF(NOW(),   t1.refreshStatus) < '24:00:00' THEN concat(HOUR(TIMEDIFF(NOW(),   t1.refreshStatus)), '시간전')" +
@@ -211,7 +212,7 @@ public class tradeDao {
     }
 
     public List<myKeywordTradeListRes> myKeywordTradeList(int userIdx){
-        String getMyKeywordTradeListQuery = "select (select imgUrl from tradeImg where tradeImg.boardIdx = tradeBoard.boardIdx group by boardIdx) as tradeImg," +
+        String getMyKeywordTradeListQuery = "select (select imgUrl from tradeImg where tradeImg.boardIdx = tradeBoard.boardIdx limit 1) as tradeImg," +
                 "       tradeBoard.tradeTitle ,  FORMAT(tradeBoard.price , 0) as price, tradeBoard.boardIdx" +
                 "     from" +
                 "    tradeBoard join tradeImg on tradeBoard.boardIdx = tradeImg.boardIdx" +
@@ -232,7 +233,7 @@ public class tradeDao {
 
     public List<userTradeListRes> userTradeList(int userIdx){
         String getUserTradeListQuery = "select Member.userId," +
-                "    (select imgUrl from tradeImg where tradeImg.boardIdx = tradeBoard.boardIdx group by boardIdx) as tradeImg," +
+                "    (select imgUrl from tradeImg where tradeImg.boardIdx = tradeBoard.boardIdx limit 1) as tradeImg," +
                 "       tradeBoard.tradeTitle ," +
                 "    FORMAT(tradeBoard.price , 0) as price, tradeBoard.boardIdx as boardIdx" +
                 "     from" +
@@ -254,14 +255,13 @@ public class tradeDao {
 
     public tradeDetailRes tradeDetail(int boardIdx){
         String getTradeDetailQuery =
-                " select Member.userId," +
-                "       Member.profileImg," +
-                "    (select imgUrl from tradeImg where tradeImg.boardIdx = tradeBoard.boardIdx group by boardIdx) as tradeImg," +
-                "       tradeBoard.tradeTitle ," +
-                "       tradeBoard.content," +
-                "       tradeBoard.itemCategory," +
+                " select Member.userId as userId, Member.userIdx as userIdx, " +
+                "       Member.profileImg as profileImg," +
+                "       tradeBoard.tradeTitle as tradeTitle," +
+                "       tradeBoard.content as content," +
+                "       tradeBoard.itemCategory as itemCategory," +
                 "    FORMAT(tradeBoard.price , 0) as price," +
-                "     Member.mannerPoint, memberAddress.address1 as address," +
+                "     Member.mannerPoint as mannerPoint, memberAddress.address1 as address," +
                 "       CASE" +
                 "          WHEN TIMEDIFF(NOW(),  tradeBoard.refreshStatus) < '01:00:00' THEN concat(MINUTE(TIMEDIFF(NOW(),   tradeBoard.refreshStatus)), '분전')" +
                 "          WHEN TIMEDIFF(NOW(),   tradeBoard.refreshStatus) < '24:00:00' THEN concat(HOUR(TIMEDIFF(NOW(),   tradeBoard.refreshStatus)), '시간전')" +
@@ -275,7 +275,7 @@ public class tradeDao {
                 "           writeTime," +
                 "         tradeBoard.boardIdx as boardIdx " +
                 "        from" +
-                "         tradeBoard join tradeImg on tradeBoard.boardIdx = tradeImg.boardIdx" +
+                "         tradeBoard " +
                 "                    join Member on tradeBoard.userIdx = Member.userIdx" +
                 "                    join memberAddress on tradeBoard.userIdx = memberAddress.userIdx" +
                 "                     where tradeBoard.boardIdx = ?";
@@ -284,7 +284,6 @@ public class tradeDao {
                 (rs,rowNum)-> new tradeDetailRes(
                         rs.getString("userId"),
                         rs.getString("profileImg"),
-                        rs.getString("tradeImg"),
                         rs.getString("tradeTitle"),
                         rs.getString("content"),
                         rs.getString("itemCategory"),
@@ -293,13 +292,20 @@ public class tradeDao {
                         rs.getString("address"),
                         rs.getString("refreshStatus"),
                         rs.getString("writeTime"),
-                        rs.getInt("boardIdx")),
+                        rs.getInt("boardIdx"),
+                        rs.getInt("userIdx")),
                 getTradeDetailParams);
 
     }
 
+    public List<String> tradeDetail2(int boardIdx){
+        String getImgQuery = "select imgUrl from tradeImg where boardIdx = ?";
+        return this.jdbcTemplate.queryForList(getImgQuery,String.class,boardIdx);
+    }
+
+
     public List<myChatDetailRes> chatDetail(int userIdx, int chatRoomIdx){
-        String getMyChatDetailQuery = "select tradeImg.imgUrl as tradeImg, tradeBoard.tradeStatus, tradeBoard.price, tradeBoard.tradeTitle," +
+        String getMyChatDetailQuery = "select (select imgUrl from tradeImg where tradeImg.boardIdx = tradeBoard.boardIdx limit 1) as tradeImg, tradeBoard.tradeStatus, tradeBoard.price, tradeBoard.tradeTitle," +
                 "          chatContent.content," +
                 "          Member.profileImg as profileImg," +
                 "          Member.userId as writer," +
@@ -310,9 +316,9 @@ public class tradeDao {
                 "        join chatRoom on chatRoom.boardIdx = tradeBoard.boardIdx" +
                 "        join chatContent on chatContent.roomIdx = chatRoom.roomIdx" +
                 "        join Member on chatContent.userIdx = Member.userIdx" +
-                "        where chatRoom.roomIdx = ? and chatContent.userIdx = ? or chatContent.userIdx2 = ?";
+                "        where chatRoom.roomIdx = ? order by writeTime ";
 
-        Object[] getMyChatDetailParams = new Object[]{chatRoomIdx,userIdx,userIdx};
+        Object[] getMyChatDetailParams = new Object[]{chatRoomIdx};
         return this.jdbcTemplate.query(getMyChatDetailQuery,
                 (rs,rowNum)-> new myChatDetailRes(
                         rs.getString("tradeImg"),

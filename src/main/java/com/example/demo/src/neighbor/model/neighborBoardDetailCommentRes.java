@@ -16,7 +16,8 @@ public class neighborBoardDetailCommentRes {
     private String writeTime;
     private int commentIdx;
     private String imgUrl;
-
+    private int commentDepth;
+    private int commentGroup;
 
 
 }

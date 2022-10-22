@@ -166,9 +166,9 @@ public class tradeController {
 
     @ResponseBody
     @GetMapping("/tradedetail")
-    public BaseResponse<tradeDetailRes> tradeDetail(@RequestParam int boardIdx){
+    public BaseResponse<tradeDetailRes2> tradeDetail(@RequestParam int boardIdx){
         try {
-            tradeDetailRes tradeDetail = tradeProvider.tradeDetail(boardIdx);
+            tradeDetailRes2 tradeDetail = tradeProvider.tradeDetail(boardIdx);
             return new BaseResponse<>(tradeDetail);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));

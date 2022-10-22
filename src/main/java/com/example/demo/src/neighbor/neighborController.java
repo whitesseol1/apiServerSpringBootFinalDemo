@@ -34,7 +34,7 @@ public class neighborController {
 
     @ResponseBody
     @GetMapping("/neighborboard")
-    public BaseResponse<neighborBoardDetailRes> neighborBoardDetail(@RequestParam(required = true) int neighborBoardIdx){
+    public BaseResponse<neighborBoardDetailRes2> neighborBoardDetail(@RequestParam(required = true) int neighborBoardIdx){
         int userIdxByJwt = 0;
         try {
             //jwt에서 idx 추출.
@@ -48,7 +48,7 @@ public class neighborController {
                 return new BaseResponse<>( REQUEST_ERROR);
             }
 
-            neighborBoardDetailRes neighborBoardDetailRes = neighborProvider.neighborBoardDetail(neighborBoardIdx,userIdxByJwt);
+            neighborBoardDetailRes2 neighborBoardDetailRes = neighborProvider.neighborBoardDetail(neighborBoardIdx,userIdxByJwt);
             return new BaseResponse<>(neighborBoardDetailRes);
         } catch(BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
@@ -79,7 +79,7 @@ public class neighborController {
     }
 
     @ResponseBody
-    @PostMapping("/neighborboardlist")
+    @GetMapping("/neighborboardlist")
     public BaseResponse<List<neighborBoardListRes>> neighborBoardList(){
         int userIdxByJwt = 0;
 

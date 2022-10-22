@@ -83,9 +83,12 @@ public class tradeProvider {
         }
     }
 
-    public tradeDetailRes tradeDetail(int boardIdx) throws BaseException{
+    public tradeDetailRes2 tradeDetail(int boardIdx) throws BaseException{
         try{
-            return tradeDao.tradeDetail(boardIdx);
+
+            tradeDetailRes res = tradeDao.tradeDetail(boardIdx);
+            List<String> imgUrl = tradeDao.tradeDetail2(boardIdx);
+            return new tradeDetailRes2(res,imgUrl);
         } catch (Exception exception){
             throw new BaseException(RESPONSE_ERROR);
         }

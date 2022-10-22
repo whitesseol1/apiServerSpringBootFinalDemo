@@ -11,7 +11,6 @@ public class tradeDetailRes {
 
     private String userId;
     private String profileImg;
-    private String tradeImg;
     private String tradeTitle;
     private String content;
     private String itemCategory;
@@ -21,6 +20,7 @@ public class tradeDetailRes {
     private String refreshStatus;
     private String writeTime;
     private int boardIdx;
+    private int userIdx;
 
 
 }

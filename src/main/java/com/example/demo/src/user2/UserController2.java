@@ -139,10 +139,10 @@ public class UserController2 {
     }
 
     @ResponseBody
-    @PostMapping("/myaccountbook")
-    public BaseResponse<myAccountBookRes>  myAccountBook(@RequestBody String yearMonth){
+    @GetMapping("/myaccountbook")
+    public BaseResponse<myAccountBookRes>  myAccountBook(@RequestParam String yearMonth){
             int userIdxByJwt = 0;
-            String yearMonth1 = yearMonth;
+            System.out.println("yearMonth "+yearMonth);
         try {
             //jwt에서 idx 추출.
              userIdxByJwt = jwtService.getUserIdx();
@@ -151,7 +151,7 @@ public class UserController2 {
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
 
-            myAccountBookRes res = userProvider2.myAccountBook(userIdxByJwt, yearMonth1);
+            myAccountBookRes res = userProvider2.myAccountBook(userIdxByJwt, yearMonth);
 
             return new BaseResponse<>(res);
         } catch (BaseException exception) {

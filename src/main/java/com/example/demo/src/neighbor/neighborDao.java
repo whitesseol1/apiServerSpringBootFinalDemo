@@ -55,12 +55,20 @@ public class neighborDao {
                         rs.getString("refreshStatus"),
                         rs.getInt("wonderStatus"),
                         rs.getInt("empathyStatus"),
-                        rs.getInt("boardIdx")),
+                        rs.getInt("boardIdx")
+                        ),
                 getBoardParams);
     }
 
+    public List<String> neighborBoardDetail2(int boardIdx){
+        String getImgQuery = "SELECT img from neighborBoardImg where boardIdx = ?";
+        return this.jdbcTemplate.queryForList(getImgQuery,
+                String.class, boardIdx);
+    }
+
+
     public List<neighborBoardDetailCommentRes> neighborBoardComment(int boardIdx, int userIdx) {
-        String getCommentQuery = " SELECT member.userId, member.profileImg,t2.address1 as address , t1.comment, " +
+        String getCommentQuery = " SELECT t1.commentDepth, t1.commentGroup, member.userId, member.profileImg,t2.address1 as address , t1.comment, " +
                 "(select count(*) from `commentLike` as C where userIdx = ? and C.commentIdx = t1.commentIdx) as myLikeStatus,"+
                 "         CASE" +
                 "          WHEN TIMEDIFF(NOW(), t1.updatedAt) < '01:00:00' THEN concat(MINUTE(TIMEDIFF(NOW(),  t1.updatedAt)), '분전')" +
@@ -82,7 +90,9 @@ public class neighborDao {
                         rs.getInt("myLikeStatus"),
                         rs.getString("writeTime"),
                         rs.getInt("commentIdx"),
-                        rs.getString("imgUrl")),
+                        rs.getString("imgUrl"),
+                        rs.getInt("commentDepth"),
+                        rs.getInt("commentGroup")),
                 getBoardParams);
 
     }

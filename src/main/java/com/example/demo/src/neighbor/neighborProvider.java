@@ -3,6 +3,7 @@ package com.example.demo.src.neighbor;
 import com.example.demo.config.BaseException;
 import com.example.demo.src.neighbor.model.neighborBoardDetailCommentRes;
 import com.example.demo.src.neighbor.model.neighborBoardDetailRes;
+import com.example.demo.src.neighbor.model.neighborBoardDetailRes2;
 import com.example.demo.src.neighbor.model.neighborBoardListRes;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
@@ -29,11 +30,16 @@ public class neighborProvider {
         this.jwtService = jwtService;
     }
 
-    public neighborBoardDetailRes neighborBoardDetail(int boardIdx, int userIdx) throws BaseException {
+    public neighborBoardDetailRes2 neighborBoardDetail(int boardIdx, int userIdx) throws BaseException {
 
        try{
             neighborBoardDetailRes res = neighborDao.neighborBoardDetail(boardIdx,userIdx);
-            return res;
+            List<String> list = neighborDao.neighborBoardDetail2(boardIdx);
+            //List<String> list = new ArrayList<String>();
+            //list.add("1");
+
+            neighborBoardDetailRes2 res2 = new neighborBoardDetailRes2(res,list);
+            return res2;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
