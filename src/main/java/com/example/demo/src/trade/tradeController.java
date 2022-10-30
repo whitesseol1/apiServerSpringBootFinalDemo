@@ -32,7 +32,7 @@ public class tradeController {
     }
 
     @ResponseBody
-    @RequestMapping("/mychatlist")
+    @GetMapping("/mychatlist")
     public BaseResponse<List<myChatRes>> chatList() {
 
         int userIdxByJwt = 0;
@@ -56,7 +56,7 @@ public class tradeController {
     }
 
     @ResponseBody
-    @RequestMapping("/mytradelist")
+    @GetMapping("/mytradelist")
     public BaseResponse<List<myTradeRes>> myTradeList() {
 
 
@@ -80,7 +80,7 @@ public class tradeController {
     }
 
     @ResponseBody
-    @RequestMapping("/myfinishtradelist")
+    @GetMapping("/myfinishtradelist")
     public BaseResponse<List<myTradeRes>> myFinishTradeList(){
         try{
             //jwt에서 idx 추출.
@@ -94,7 +94,7 @@ public class tradeController {
     }
 
     @ResponseBody
-    @RequestMapping("/mybuytradelist")
+    @GetMapping("/mybuytradelist")
     public BaseResponse<List<myTradeRes>> myBuyTradeList(){
         try{
             //jwt에서 idx 추출.
@@ -109,7 +109,7 @@ public class tradeController {
     }
 
     @ResponseBody
-    @RequestMapping("/myneighborboardtrade")
+    @GetMapping("/myneighborboardtrade")
   public BaseResponse<List<myNeighborTradeListRes>> myNeighborTradeList(){
 
         int userIdxByJwt = 0;
@@ -132,7 +132,7 @@ public class tradeController {
     }
 
     @ResponseBody
-    @RequestMapping("/mykeywordtradelist")
+    @GetMapping("/mykeywordtradelist")
   public BaseResponse<List<myKeywordTradeListRes>> myKeywordTradeList(){
         int userIdxByJwt = 0;
 
@@ -216,7 +216,7 @@ public class tradeController {
     }
 
     @ResponseBody
-    @PostMapping("/trademodify")
+    @PutMapping("/trademodify")
   public BaseResponse<Integer> tradeModify(@RequestBody tradeWriteReq req) {
         int userIdxByJwt = 0;
         try {
@@ -256,8 +256,8 @@ public class tradeController {
     }
 
     @ResponseBody
-    @GetMapping("/interest")
-  public BaseResponse<String>  insertInterest(@RequestParam int boardIdx){
+    @PostMapping("/interest")
+  public BaseResponse<String>  insertInterest(@RequestBody interestReq req){
         int userIdxByJwt = 0;
         try {
             //jwt에서 idx 추출.
@@ -267,7 +267,7 @@ public class tradeController {
         }
 
         try{
-            String result = tradeService.insertInterest(userIdxByJwt, boardIdx);
+            String result = tradeService.insertInterest(userIdxByJwt, req.getBoardIdx());
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));

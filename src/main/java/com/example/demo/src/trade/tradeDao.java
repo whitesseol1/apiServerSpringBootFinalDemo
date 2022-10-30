@@ -40,7 +40,7 @@ public class tradeDao {
                         "                   from chatContent" +
                         "                   inner join (select roomIdx, max(chatIdx) as currentMessageNo" +
                         "                        from chatContent" +
-                        "                         group by roomIdx) CurrentMessage" + "                  where currentMessageNo = chatIdx) lastChatMessage on lastChatMessage.roomIdx = `t1`.roomIdx" +
+                        "                         group by roomIdx) CurrentMessage   where currentMessageNo = chatIdx) lastChatMessage on lastChatMessage.roomIdx = `t1`.roomIdx" +
                         "       where t1.userIdx = ? group by `t1`.roomIdx";
 
         int getMyChatListParams = userIdx;
@@ -58,7 +58,7 @@ public class tradeDao {
 
     public List<myTradeRes> myTradeList(int userIdx) {
 
-        String getMyTradeListQuery = "select t1.userIdx, t1.boardIdx, t1.tradeTitle, t2.imgUrl, t1.tradeStatus, FORMAT(t1.price , 0) as price , `t3`.address1 as address, t1.interest," +
+        String getMyTradeListQuery = "select t1.userIdx, t1.boardIdx, t1.tradeTitle, t1.tradeStatus, FORMAT(t1.price , 0) as price , `t3`.address1 as address, t1.interest," +
                 "       t1.refresh," +
                 "         CASE" +
                 "      WHEN TIMEDIFF(NOW(), t1.refreshStatus) < '01:00:00' THEN concat(MINUTE(TIMEDIFF(NOW(), t1.refreshStatus)), '분전')" +
@@ -71,9 +71,10 @@ public class tradeDao {
                 ", (select count(*) from tradeBoard" +
                 "    join chatRoom as chatRoom on tradeBoard.boardIdx = chatRoom.boardIdx" +
                 "                   where tradeBoard.boardIdx = t4.boardIdx)" +
-                "    as 'chatRoomCount'" +
-                "from tradeBoard as `t1` left outer join tradeImg as `t2` on t1.boardIdx = `t2`.boardIdx left outer join `memberAddress` as `t3`" +
-                "   on t1.userIdx = t3.userIdx left outer join `chatRoom` as `t4` on `t1`.boardIdx = t4.boardIdx" +
+                "    as 'chatRoomCount'," +
+                "  (select imgUrl from tradeImg where boardIdx = t1.boardIdx limit 1) as imgUrl " +
+                "from tradeBoard as `t1`  left join `memberAddress` as `t3`" +
+                "   on t1.userIdx = t3.userIdx left join `chatRoom` as `t4` on `t1`.boardIdx = t4.boardIdx" +
                 "    where t1.userIdx = ? and t1.tradeStatus = '거래대기' group by `t1`.boardIdx";
         int getMyTradeListParams = userIdx;
         return this.jdbcTemplate.query(getMyTradeListQuery,
@@ -111,8 +112,8 @@ public class tradeDao {
                 "    join chatRoom as chatRoom on tradeBoard.boardIdx = chatRoom.boardIdx" +
                 "                   where tradeBoard.boardIdx = t4.boardIdx)" +
                 "    as 'chatRoomCount', (select imgUrl from tradeImg where boardIdx = t1.boardIdx limit 1) as imgUrl" +
-                "  from tradeBoard as `t1` left outer join tradeImg as `t2` on t1.boardIdx = `t2`.boardIdx left outer join `memberAddress` as `t3`" +
-                "   on t1.userIdx = t3.userIdx left outer join `chatRoom` as `t4` on `t1`.boardIdx = t4.boardIdx" +
+                "  from tradeBoard as `t1` left join `memberAddress` as `t3`" +
+                "   on t1.userIdx = t3.userIdx left join `chatRoom` as `t4` on `t1`.boardIdx = t4.boardIdx" +
                 "    where t1.userIdx = ? and t1.tradeStatus = '거래완료' group by `t1`.boardIdx";
         int getMyTradeListParams = userIdx;
         return this.jdbcTemplate.query(getMyTradeListQuery,
@@ -148,9 +149,9 @@ public class tradeDao {
         "join chatRoom as chatRoom on tradeBoard.boardIdx = chatRoom.boardIdx "+
         "where tradeBoard.boardIdx = t4.boardIdx) "+
         "as 'chatRoomCount', (select imgUrl from tradeImg where boardIdx = t1.boardIdx limit 1) as imgUrl "+
-        "from tradeBoard as `t1` left outer join tradeImg as `t2` on t1.boardIdx = `t2`.boardIdx left outer join `memberAddress` as `t3` "+
-        "on t1.userIdx = t3.userIdx left outer join `chatRoom` as `t4` on `t1`.boardIdx = t4.boardIdx "+
-        "left join buySellRecord bSR on t1.boardIdx = bSR.boardIdx "+
+        "from tradeBoard as `t1`  left join `memberAddress` as `t3` "+
+        "on t1.userIdx = t3.userIdx  left join `chatRoom` as `t4` on `t1`.boardIdx = t4.boardIdx "+
+        " join buySellRecord bSR on t1.boardIdx = bSR.boardIdx "+
         "where bSR.userIdx = ? and bSR.buySellStatus = 'buy' and bSR.tradeStatus = '거래완료'";
 
         int getMyTradeListParams = userIdx;
@@ -192,7 +193,6 @@ public class tradeDao {
                 "           ,t1.interest, t1.boardIdx " +
                 "    from" +
                 "    tradeBoard as t1 left join memberAddress as t2 on t1.userIdx = t2.userIdx" +
-                "                     left join tradeImg as t3 on t1.boardIdx = t3.boardIdx" +
                 " where INSTR( t2.address1, SUBSTRING_INDEX((select address1 from memberAddress where userIdx = ?), '동', 1)) >0"+
                 " or  INSTR( t2.address1, SUBSTRING_INDEX((select address1 from memberAddress where userIdx = ?), '동', 2)) >0"+
                 " or  INSTR( t2.address1, SUBSTRING_INDEX((select address1 from memberAddress where userIdx = ?), '구', 1)) >0";
@@ -215,7 +215,7 @@ public class tradeDao {
         String getMyKeywordTradeListQuery = "select (select imgUrl from tradeImg where tradeImg.boardIdx = tradeBoard.boardIdx limit 1) as tradeImg," +
                 "       tradeBoard.tradeTitle ,  FORMAT(tradeBoard.price , 0) as price, tradeBoard.boardIdx" +
                 "     from" +
-                "    tradeBoard join tradeImg on tradeBoard.boardIdx = tradeImg.boardIdx" +
+                "    tradeBoard " +
                 "    where itemCategory =" +
                 "    (select t2.categoryName from interestCategory as t1 join interestCategoryDefinition as t2 on t1.interestIdx = t2.categoryIdx where t1.userIdx = ?)" +
                 "    or instr(tradeTitle, (select categoryName2 from interestCategory as t1 join interestCategoryDefinition as t2 on t1.interestIdx = t2.categoryIdx where t1.userIdx = ?))";
@@ -237,7 +237,7 @@ public class tradeDao {
                 "       tradeBoard.tradeTitle ," +
                 "    FORMAT(tradeBoard.price , 0) as price, tradeBoard.boardIdx as boardIdx" +
                 "     from" +
-                "    tradeBoard join tradeImg on tradeBoard.boardIdx = tradeImg.boardIdx" +
+                "    tradeBoard " +
                 "               join Member on tradeBoard.userIdx = Member.userIdx" +
                 "    where tradeBoard.userIdx = ? and tradeBoard.tradeStatus = '거래대기'";
 
@@ -276,8 +276,8 @@ public class tradeDao {
                 "         tradeBoard.boardIdx as boardIdx " +
                 "        from" +
                 "         tradeBoard " +
-                "                    join Member on tradeBoard.userIdx = Member.userIdx" +
-                "                    join memberAddress on tradeBoard.userIdx = memberAddress.userIdx" +
+                "                    left join Member on tradeBoard.userIdx = Member.userIdx" +
+                "                    left join memberAddress on tradeBoard.userIdx = memberAddress.userIdx" +
                 "                     where tradeBoard.boardIdx = ?";
         int getTradeDetailParams = boardIdx;
         return this.jdbcTemplate.queryForObject(getTradeDetailQuery,
@@ -312,10 +312,10 @@ public class tradeDao {
                 "        REPLACE(REPLACE(DATE_FORMAT(chatContent.updatedAt, '%p %l:%i'),'AM','오전'),'PM','오후')" +
                 "        as writeTime, chatContent.chatIdx as chatIdx" +
                 "   from" +
-                "        tradeBoard join tradeImg on tradeBoard.boardIdx = tradeImg.boardIdx" +
-                "        join chatRoom on chatRoom.boardIdx = tradeBoard.boardIdx" +
-                "        join chatContent on chatContent.roomIdx = chatRoom.roomIdx" +
-                "        join Member on chatContent.userIdx = Member.userIdx" +
+                "        tradeBoard " +
+                "        left join chatRoom on chatRoom.boardIdx = tradeBoard.boardIdx" +
+                "        left join chatContent on chatContent.roomIdx = chatRoom.roomIdx" +
+                "        left join Member on chatContent.userIdx = Member.userIdx" +
                 "        where chatRoom.roomIdx = ? order by writeTime ";
 
         Object[] getMyChatDetailParams = new Object[]{chatRoomIdx};

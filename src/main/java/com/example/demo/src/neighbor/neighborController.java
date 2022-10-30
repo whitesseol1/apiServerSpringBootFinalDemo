@@ -139,12 +139,12 @@ public class neighborController {
     }
 
      @ResponseBody
-     @GetMapping("/empathy")
-   public BaseResponse<String> insertEmpathy(@RequestParam int boardIdx){
+     @PostMapping("/empathy")
+   public BaseResponse<String> insertEmpathy(@RequestBody empathyReq req){
        try{
 
            int userIdxByJwt = jwtService.getUserIdx();
-           String result = neighborService.insertEmpathy(userIdxByJwt, boardIdx);
+           String result = neighborService.insertEmpathy(userIdxByJwt, req.getBoardIdx());
            return new BaseResponse<>(result);
        } catch(BaseException exception) {
            return new BaseResponse<>((exception.getStatus()));

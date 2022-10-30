@@ -161,8 +161,8 @@ public class UserController2 {
     }
 
     @ResponseBody
-    @GetMapping("/keyword")
-    public BaseResponse<Integer> keywordAlarm(@RequestParam String keyword){
+    @PostMapping("/keyword")
+    public BaseResponse<Integer> keywordAlarm(@RequestBody String keyword){
         int userIdxByJwt = 0;
 
         try{
@@ -180,8 +180,8 @@ public class UserController2 {
     }
 
     @ResponseBody
-    @GetMapping("/neighborset")
-    public BaseResponse<String> neighborSet(@RequestParam String neighbor){
+    @PostMapping("/neighborset")
+    public BaseResponse<String> neighborSet(@RequestBody String neighbor){
         int userIdxByJwt = 0;
         try{
             //jwt에서 idx 추출.
